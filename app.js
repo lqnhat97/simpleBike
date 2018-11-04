@@ -1,4 +1,29 @@
 $(document).ready(function () {
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    function showPosition(position) {
+        var pos = position.coords;
+        var latPos = pos.latitude;
+        var lngPos = pos.longitude;
+        var urMarker = new H.map.Marker({
+            lat: latPos,
+            lng: lngPos
+        })
+        map.addObject(urMarker);
+    }
+
+    function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }
+
+    // Add marker to map
+    navigator.geolocation.getCurrentPosition(showPosition, error, options);
+
+    //init
     var platform = new H.service.Platform({
         app_id: 'gDzN0nMCji5lof7dXffC',
         app_code: 'LTEbJMPNijbdRxULdUrFmg',
@@ -26,7 +51,9 @@ $(document).ready(function () {
     // Instantiate (and display) a map object:
     var map = new H.Map(
         document.getElementById('mapContainer'),
-        defaultLayers.normal.map, {pixelRatio: pixelRatio});
+        defaultLayers.normal.map, {
+            pixelRatio: pixelRatio
+        });
     // Interactive map
     var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
@@ -34,6 +61,11 @@ $(document).ready(function () {
     var ui = H.ui.UI.createDefault(map, defaultLayers);
 
     //Use Map
-    moveMapToHoChiMinh(map)
+    moveMapToHoChiMinh(map);
+
+
+    //Get your postion
+
+    var x = document.getElementById("demo");
 
 })
