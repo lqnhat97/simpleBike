@@ -63,9 +63,21 @@ $(document).ready(function () {
     //Use Map
     moveMapToHoChiMinh(map);
 
-
-    //Get your postion
-
-    var x = document.getElementById("demo");
-
+    $("form").submit(function(e) {
+        e.preventDefault();
+        var fdata=$(this).serializeArray();
+        console.log(fdata);
+        fdata=JSON.stringify(fdata);
+        console.log(fdata);
+        $.ajax({
+            contentType: 'application/json',
+            url: 'http://localhost:8088/bookBike/',
+            type: 'POST',
+            data:fdata,
+            dataType: 'json',
+            timeout: 10000
+        }).done((res)=>{
+            console.log(res);
+        })
+    });
 })

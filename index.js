@@ -1,13 +1,16 @@
-var express = require('express'),
-    bodyParser = require('body-parser'),
-    lowdb = require('lowdb'),
-    moment = require('moment');
+var app = require('express')(),
+    bodyParser=require('body-parser'),
+    morgan=require('morgan');
 
-var app = express()
-    .use(express.static(path.join(__dirname, 'public')))
-    .set('views', path.join(__dirname, 'views'))
-    .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/index'))
-    .listen(PORT, () => console.log('Listening on ${ PORT }'));
+var http = require('http').Server(app);
+var customer = require('./Controller/CustomerController')
 
-var PORT = process.env.PORT || 5000
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+
+app.use('/bookBike', customer);
+
+var port = process.env.PORT || 8088;
+http.listen(port, ()=>{
+    console.log('Connected at port:' + port);
+})
