@@ -1,7 +1,6 @@
 var express = require('express'),
     bodyParser=require('body-parser'),
     morgan=require('morgan');
-
 app=express();
 app.use(express.static('public'));
 

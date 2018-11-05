@@ -1,11 +1,13 @@
 $(document).ready(function () {
+    
+    //Find your location option
     var options = {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
     };
 
-
+    //Show position
     function showPosition(position) {
         console.log(position);
         var pos = position.coords;
@@ -48,11 +50,12 @@ $(document).ready(function () {
         map.addObject(urMarker);
     }
 
+    // Response Errors
     function error(err) {
         console.warn(`ERROR(${err.code}): ${err.message}`);
     }
 
-    // Add marker to map
+    // Get position
     navigator.geolocation.getCurrentPosition(showPosition, error, options);
 
     $("form").submit(function (e) {
