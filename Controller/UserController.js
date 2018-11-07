@@ -4,15 +4,9 @@ var authRepos = require('../Repos/AuthRepos');
 var router = express.Router();
 
 router.post('/', (req, res) => {
-    //var userName=req.body.username;
-    //var password=req.body.password;
-    var loginEntity = {
-        userName: 'lqnhat',
-        password: 'nhat1234'
-    }
-    // userRepos.login(loginEntity).then(row => {
-    //     if (row.lenght > 0) {
-            var userEntity = loginEntity;
+    userRepos.login(req.body).then(row => {
+        if (row.length > 0) {
+            var userEntity = row[0];
             var acToken = authRepos.generateAccessToken(userEntity);
             var rfToken = authRepos.generateRefreshToken();
             res.json({
@@ -21,16 +15,16 @@ router.post('/', (req, res) => {
                 access_token: acToken,
                 refresh_token: rfToken
             })
-    //     } else {
-    //         res.json({
-    //             auth: false
-    //         })
-    //     }
-    // }).catch(err => {
-    //     console.log(err);
-    //     res.statusCode = 500;
-    //     res.end('View error log on console');
-    // })
+        } else {
+            res.json({
+                auth: false
+            })
+        }
+    }).catch(err => {
+        console.log(err);
+        res.statusCode = 500;
+        res.end('View error log on console');
+    })
 
 })
 

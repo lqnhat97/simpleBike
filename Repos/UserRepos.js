@@ -1,7 +1,5 @@
+var db = require('../db/db');
 exports.login = loginEntity =>{
-    loginEntity ={
-        userName:'lqnhat',
-        password:'nhat1234'
-    }
-    return loginEntity;
+    var sql=`select * from staff where staffUsername = '${loginEntity.userName}' and staffPassword ='${loginEntity.password}';`;
+    db.load(sql);
 }
