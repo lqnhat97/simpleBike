@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Simple Bike Hiring Application</title>
+    <title>Application1</title>
     <!--Bootstrap4-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
@@ -14,50 +14,35 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
-
-    <!--HereMap-->
-    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css?dp-version=1533195059" />
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
-    <!--OwnScript-->
-    <script src="./app.js"></script>
-
+    <script src="../Public/JS/app.js"></script>
+    <link rel="stylesheet" href="../Public/CSS/style.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>Đặt xe dễ dàng với SIMPLE HIRING BIKE</h1>
+        <h1>Thông tin khách hàng đặt xe</h1>
         <div class="row">
-            <div class="col-sm-8">
-                <div style="width: 100%; height: 800px; background: grey" id="mapContainer">
-
+            <form>
+                <div class="form-group form-row">
+                    <label for="cus_name">Họ tên</label>
+                    <input type="text" class="form-control" name="cus_name" id="cus_name" placeholder="Mời nhập họ tên">
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <form>
-                    <div class="form-group">
-                        <label for="cus_name">Họ tên</label>
-                        <input type="text" class="form-control" name="cus_name" id="cus_name" placeholder="Mời nhập họ tên">
-                    </div>
-                    <div class="form-group">
-                        <label for="cus_tel">Điện thoại</label>
-                        <input type="tel" class="form-control" name="cus_tel" id="cus_tel" placeholder="012345678">
-                    </div>
-                    <div class="form-group">
-                        <label for="cus_des">Địa chỉ đón</label>
-                        <input type="text" class="form-control" name="cus_des" id="cus_des" placeholder="227 Nguyễn Văn Cừ">
-                    </div>
-                    <div class="form-group">
-                        <label for="cus_note">Ghi chú</label>
-                        <input type="text" class="form-control" name="cus_note" id="cus_note" placeholder="Trai đẹp only">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Đặt xe</button>
-
-                </form>
-
-            </div>
+                <div class="form-group form-row">
+                    <label for="cus_tel">Điện thoại</label>
+                    <input type="tel" class="form-control" name="cus_tel" id="cus_tel" placeholder="012345678">
+                </div>
+                <div class="form-group form-row">
+                    <label for="cus_des">Địa chỉ đón</label>
+                    <input type="text" class="form-control" name="cus_des" id="cus_des" placeholder="227 Nguyễn Văn Cừ">
+                </div>
+                <div class="form-group form-row">
+                    <label for="cus_note">Ghi chú</label>
+                    <input type="text" class="form-control" name="cus_note" id="cus_note" placeholder="Trai đẹp only">
+                </div>
+                <button type="submit" class="btn btn-primary">Lưu</button>
+            </form>
+            <br />
+            <div id="notify" style="display:none"></div>
         </div>
     </div>
 

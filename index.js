@@ -1,6 +1,8 @@
-var app = require('express')(),
+var express = require('express'),
     bodyParser=require('body-parser'),
     morgan=require('morgan');
+app=express();
+app.use(express.static('public'));
 
 var http = require('http').Server(app);
 var customer = require('./Controller/CustomerController')
