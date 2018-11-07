@@ -1,5 +1,5 @@
 var express = require('express');
-axios = require('axios');
+var axios = require('axios');
 var router = express.Router();
 
 router.post('/', (req, res) => {
