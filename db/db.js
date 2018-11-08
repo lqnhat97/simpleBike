@@ -2,23 +2,24 @@ var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
-    	host: '127.0.0.1',
-    	port: '3306',
-    	user: 'root',
-    	password: 'root',
-    	database: 'simplebike'
+        host: '127.0.0.1',
+        port: '3306',
+        user: 'root',
+        password: 'root',
+        database: 'simplebike'
     });
 }
 
-exports.load = sql => {
-    return new Promise((resolve, reject) => {
+exports.load = (sql) => {
+    return new Promise((resolve, ) => {
         var cn = createConnection();
         cn.connect();
-        cn.query(sql, (err, rows, fields) => {
+        cn.query(sql, (err, rows) => {
             if (err) {
-            	reject(err);
+                reject(err);
             } else {
-            	resolve(rows);
+                resolve(rows);
+                result = rows;
             }
 
             cn.end();
