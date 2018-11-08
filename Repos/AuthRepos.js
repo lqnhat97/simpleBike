@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 var rndToken = require('rand-token');
 var moment = require('moment');
-
+var db = require('../db/db')
 const SECRET = 'NHATVINHLONG';
 const AC_LIFETIME = 600; // seconds
 
@@ -46,4 +46,19 @@ exports.verifyAccessToken = (req,res,next)=>{
 exports.generateRefreshToken = () => {
     const SIZE = 80;
     return rndToken.generate(SIZE);
+}
+
+exports.updateRefreshToken = (userName, rfToken) => {
+    return new Promise((resolve, reject) => {
+
+        var sql = `delete from token where staffUsername = '${userName}'`;
+        db.insert(sql) // delete
+            .then(value => {
+                var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
+                sql = `insert into token values('${userName}', '${rfToken}', '${rdt}')`;
+                return db.insert(sql);
+            })
+            .then(value => resolve(value))
+            .catch(err => reject(err));
+    });
 }
