@@ -8,7 +8,7 @@
     <!-- Bootstrap4-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
@@ -17,6 +17,7 @@
     <!--request_management.js-->
     <script src="../Public/JS/request_management.js"></script>
     <link rel="stylesheet" href="../Public/CSS/manager.css">
+    <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
 </head>
 
 <body style="background-color:white;">
@@ -31,15 +32,16 @@
                 All
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">All</a>
-                <a class="dropdown-item" href="#">Is Not Located</a>
-                <a class="dropdown-item" href="#">Located</a>
-                <a class="dropdown-item" href="#">Assigned</a>
-                <a class="dropdown-item" href="#">Moving</a>
-                <a class="dropdown-item" href="#">Finish</a>
+                <a id="all" class="dropdown-item" href="#">All</a>
+                <a id="isNotLocated" class="dropdown-item" href="#">Is Not Located</a>
+                <a id="located" class="dropdown-item" href="#">Located</a>
+                <a id="assigned" class="dropdown-item" href="#">Assigned</a>
+                <a id="moving" class="dropdown-item" href="#">Moving</a>
+                <a id="finish" class="dropdown-item" href="#">Finish</a>
+                <a id="noBike" class="dropdown-item" href="#">No bike</a>
             </div>
         </div>
-        <table class="table table-bordered table table-fixed table-active" id="requestTable" >
+        <table class="table table-bordered table table-fixed table-active" id="requestTable">
             <thead>
                 <tr>
                     <th scope="col" class="col10per">#</th>
@@ -50,108 +52,9 @@
                     <th scope="col" class="col15per">Booked Time</th>
                     <th scope="col" class="col10per">*</th>
                 </tr>
-            </thead> 
-            <tbody>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-                <tr>
-                    <td scope="row" class="col10per">1</td>
-                    <td class="col15per">Mark</td>
-                    <td class="col15per">Otto</td>
-                    <td class="col20per">@mdo</td>
-                    <td class="col10per">@mdo</td>
-                    <td class="col15per">10:00</td>
-                    <td class="col10per"> *  </td>
-                </tr>
-            </tbody>
+            </thead>
+            <tbody id="user_info">
+            </tbody>       
         </table>
     </div>
 
