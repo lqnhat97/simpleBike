@@ -15,7 +15,9 @@ app.use(bodyParser.json());
 
 app.use('/bookBike', customer);
 app.use('/api/users', userController);
-app.use('/admin',requestController);
+app.use('/admin', requestController);
+
+
 var port = process.env.PORT || 8088;
 http.listen(port, () => {
     console.log('Connected at port:' + port);
