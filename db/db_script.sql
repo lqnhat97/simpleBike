@@ -50,10 +50,10 @@ CREATE TABLE `token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-insert into staff(staffName,staffPhone,staffUsername,staffPassword,staffRole,startX,startY) values
-('LongCH','456456456','LongCH','456789',1,10.76299,106.68252),
-('VinhHNQ','321321321','VinhHNQ','456456',2,10.76299,106.68252),
-('NhatNQ','321321322','NhatNQ','123123',3,10.76299,106.68252);
+insert into staff(staffName,staffPhone,staffUsername,staffPassword,staffRole) values
+('LongCH','456456456','LongCH','456789',1),
+('VinhHNQ','321321321','VinhHNQ','456456',2),
+('NhatNQ','321321322','NhatNQ','123123',3);
 
 insert into driver(driverName,driverPhone,lastLocation,driverState) values
 ('LongCH','456456456','',0),
@@ -61,9 +61,10 @@ insert into driver(driverName,driverPhone,lastLocation,driverState) values
 ('NhatNQ','321321322','',1);
 
 insert into request(clientName,clientPhone,clientAddress,requestState,countSearch,idDriver,startX,startY,idStaff,requestTime,clientAddressNoSign) values
-('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,0,0,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
-('VinhHNQ','321321321',N'227 Nguyen Van Cu',1,1,1,1,1,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
-('NhatNQ','321321322',N'227 Nguyen Van Cu',2,1,2,2,2,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu');
+('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('VinhHNQ','321321321',N'227 Nguyen Van Cu',1,1,1,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('NhatNQ','321321322',N'227 Nguyen Van Cu',2,1,2,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('NhatNQ','321321322',N'323/4 Lê Quang Định',2,1,2,10.811472,106.6881282,1,'2018-11-18 13:17:17',N'323/4 Le Quang Dinh');
 
 
 
