@@ -62,3 +62,26 @@ exports.updateRefreshToken = (idStaff, staffRole, rfToken) => {
             .catch(err => reject(err));
     });
 }
+
+exports.verifyAccessToken = (req, res, next) => {
+    var token = req.headers['x-access-token'];
+    if (token) {
+        jwt.verify(token, SECRET, (err, payload) => {
+            if (err) {
+                res.statusCode = 401;
+                res.json({
+                    msg: 'INVALID TOKEN',
+                    error: err
+                })
+            } else {
+                req.token_payload = payload;
+                next();
+            }
+        });
+    } else {
+        res.statusCode = 403;
+        res.json({
+            msg: 'NO_TOKEN'
+        })
+    }
+}

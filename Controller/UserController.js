@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
                     user: userEntity,
                     access_token: acToken,
                     refresh_token: rfToken
-                })
+                });
             }).catch(err=>{
                 console.log(err);
 						res.statusCode = 500;

@@ -16,6 +16,7 @@
     crossorigin="anonymous"></script>
   <!--OwnScript-->
   <link rel="stylesheet" href="../Public/CSS/login.css">
+  <script src="../Public/JS/login.js"></script>
 
 </head>
 
@@ -28,12 +29,12 @@
             <h5 class="card-title text-center">Đăng nhập</h5>
             <form class="form-signin">
               <div class="form-label-group">
-                <input type="text" id="inputUserName" class="form-control" placeholder="Tài khoản" required autofocus>
+                <input type="text" id="inputUserName" name="inputUserName" class="form-control" placeholder="Tài khoản" required autofocus>
                 <label for="inputUserName">Tài khoản</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Mật khẩu" required>
+                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Mật khẩu" required>
                 <label for="inputPassword">Mật khẩu</label>
               </div>
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Đăng nhập</button>
