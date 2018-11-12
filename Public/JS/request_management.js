@@ -43,6 +43,16 @@ $(document).ready(() => {
             lng: position.coords.longitude
         });
         map.addObject(marker);
+        // Create an info bubble object at a specific geographic location:
+        /*var bubble = new H.ui.InfoBubble({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        }, {
+            content: 'lat: ' + position.coords.latitude + ', lng:' + position.coords.longitude
+        });
+
+        // Add info bubble to the UI:
+        ui.addBubble(bubble);*/
     }
 
     // Enable the event system on the map instance:
@@ -79,6 +89,13 @@ $(document).ready(() => {
             map.addObject(marker);
         }
         map.setCenter(position);
+        // Create an info bubble object at a specific geographic location:
+        /*var bubble = new H.ui.InfoBubble(position, {
+            content: 'lat: ' + position.lat + ', lng:' + position.lng
+        });
+
+        // Add info bubble to the UI:
+        ui.addBubble(bubble);*/
     };
 
     // Get an instance of the geocoding service:
@@ -97,8 +114,8 @@ $(document).ready(() => {
     var onRoutingResult = function (result) {
         var route,
             routeShape,
-            startPoint,
-            endPoint,
+            //startPoint,
+            //endPoint,
             linestring;
         if (result.response.route) {
             // Pick the first route from the response:
@@ -127,7 +144,7 @@ $(document).ready(() => {
                 }
             });
 
-            // Create a marker for the start point:
+            /*// Create a marker for the start point:
             var startMarker = new H.map.Marker({
                 lat: startPoint.latitude,
                 lng: startPoint.longitude
@@ -137,10 +154,10 @@ $(document).ready(() => {
             var endMarker = new H.map.Marker({
                 lat: endPoint.latitude,
                 lng: endPoint.longitude
-            });
+            });*/
 
             // Add the route polyline and the two markers to the map:
-            map.addObjects([routeLine, startMarker, endMarker]);
+            map.addObject(routeLine);
 
             // Set the map's viewport to make the whole route visible:
             map.setViewBounds(routeLine.getBounds());
@@ -149,13 +166,38 @@ $(document).ready(() => {
     // Get an instance of the routing service:
     var router = platform.getRoutingService();
 
+    function routing(position1, position2) {
+        var routingParameters = {
+            // The routing mode:
+            'mode': 'fastest;car',
+            // The start point of the route:
+            'waypoint0': 'geo!' + position1.lat + ',' + position1.lng,
+            // The end point of the route:
+            'waypoint1': 'geo!' + position2.lat + ',' + position2.lng,
+            // To retrieve the shape of the route we choose the route
+            // representation mode 'display'
+            'representation': 'display'
+        };
+        // Call calculateRoute() with the routing parameters,
+        // the callback and an error callback function (called if a
+        // communication error occurs):
+        router.calculateRoute(routingParameters, onRoutingResult,
+            function (error) {
+                alert(error.message);
+            });
+    }
 
 
     //END HEREMAP set up
+    var token = localStorage.getItem("key");
+    var assignedRequest = [];
 
     function getAll() {
         $.ajax({
             url: 'http://localhost:8088/admin',
+            beforeSend: function (request) {
+                request.setRequestHeader("x-access-token", token);
+            },
             type: 'POST',
             dataType: 'json',
             timeout: 10000
@@ -171,16 +213,11 @@ $(document).ready(() => {
                         state = "Located";
                         break;
                     case 2:
+                        assignedRequest.push(element);
                         state = "Assigned";
                         guideHTML = "<button type='button' class='btn btn-success' name='guide' >Guide</button>"
                         var destination = element.clientAddress;
-                        destination = destination.replace(/ /g, '+') + '+Ho+Chi+Minh';
-                        geocodingParams = {
-                            searchText: destination
-                        }
-                        geocoder.geocode(geocodingParams, onResult, function (e) {
-                            alert(e);
-                        });
+                        geo(destination);
                         break;
                     case 3:
                         state = "Moving";
@@ -192,7 +229,6 @@ $(document).ready(() => {
                         state = "No bike";
                         break;
                 }
-                //console.log(element);
                 $('#user_info').html($('#user_info').html() +
                     "<tr>" +
                     "<td scope='row' class='col10per'>" + element.idRequest + "</td>" +
@@ -208,12 +244,26 @@ $(document).ready(() => {
     }
     getAll();
 
+    function geo(destination) {
+        destination = destination.replace(/ /g, '+')+'+Ho+Chi+Minh';
+        geocodingParams = {
+            searchText: destination
+        }
+        geocoder.geocode(geocodingParams, onResult, function (e) {
+            alert(e);
+        });
+        console.log(onResult);
+    }
+
     function getRequestByState(state_param, state_text) {
         console.log(state_param);
 
         $.ajax({
             url: 'http://localhost:8088/admin/state',
             type: 'POST',
+            beforeSend: function (request) {
+                request.setRequestHeader("x-access-token", token);
+            },
             data: JSON.stringify({
                 "state": state_param
             }),
@@ -222,20 +272,14 @@ $(document).ready(() => {
             timeout: 10000
         }).done(function (data) {
             console.log(data);
-            var guideHTML="*";
+            var guideHTML = "*";
             var index = 0;
             data.forEach(element => {
                 console.log(element.requestState);
                 if (element.requestState == 2) {
                     guideHTML = "<button type='button' class='btn btn-success' name='guide' >Guide</button>"
                     var destination = element.clientAddress;
-                    destination = destination.replace(/ /g, '+') + '+Ho+Chi+Minh';
-                    geocodingParams = {
-                        searchText: destination
-                    }
-                    geocoder.geocode(geocodingParams, onResult, function (e) {
-                        alert(e);
-                    });
+                    geo(destination);
                 }
                 index += 1;
                 $('#user_info').html($('#user_info').html() +
@@ -285,25 +329,21 @@ $(document).ready(() => {
         $('#user_info').html("");
         getRequestByState(5, "No bike");
     })
-    $("button[name='guide']").click(function () {
-        console.log('ok');
-        var routingParameters = {
-            // The routing mode:
-            'mode': 'fastest;car',
-            // The start point of the route:
-            'waypoint0': 'geo!50.1120423728813,8.68340740740811',
-            // The end point of the route:
-            'waypoint1': 'geo!52.5309916298853,13.3846220493377',
-            // To retrieve the shape of the route we choose the route
-            // representation mode 'display'
-            'representation': 'display'
-        };
-        // Call calculateRoute() with the routing parameters,
-        // the callback and an error callback function (called if a
-        // communication error occurs):
-        router.calculateRoute(routingParameters, onRoutingResult,
-            function (error) {
-                alert(error.message);
-            });
+    $(document).on('click', "button[name='guide']", function () {
+        /*console.log(map.getObjects()[0].getPosition().lat);
+        console.log(map.getObjects()[0].getPosition().lng);
+        console.log(map.getObjects()[1].getPosition().lat);
+        console.log(map.getObjects()[1].getPosition().lng);
+        */
+        $("#mapContainer").show();
+        routing({
+            lat: map.getObjects()[0].getPosition().lat,
+            lng: map.getObjects()[0].getPosition().lng
+        }, {
+            lat: map.getObjects()[1].getPosition().lat,
+            lng: map.getObjects()[1].getPosition().lng
+        })
     })
+
+
 })
