@@ -7,6 +7,5 @@ exports.loadRequest = () => {
 
 exports.loadStateRequest = (state) => {
     var sql = `select * from request where requestState =${state.state};`;
-    console.log(sql);
     return db.load(sql);
 }
