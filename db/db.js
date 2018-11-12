@@ -5,13 +5,12 @@ var createConnection = () => {
         host: '127.0.0.1',
         port: '3306',
         user: 'root',
-        password: 'root',
         database: 'simplebike'
     });
 }
 
 exports.load = (sql) => {
-    return new Promise((resolve, ) => {
+    return new Promise((resolve, reject ) => {
         var cn = createConnection();
         cn.connect();
         cn.query(sql, (err, rows) => {

@@ -50,20 +50,20 @@ CREATE TABLE `token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-insert into staff(staffName,staffPhone,staffUsername,staffPassword) values
-('LongCH','456456456','LongCH','456789'),
-('VinhHNQ','321321321','VinhHNQ','456456'),
-('NhatNQ','321321322','NhatNQ','123123');
+insert into staff(staffName,staffPhone,staffUsername,staffPassword,staffRole) values
+('LongCH','456456456','LongCH','456789',1),
+('VinhHNQ','321321321','VinhHNQ','456456',2),
+('NhatNQ','321321322','NhatNQ','123123',3);
 
 insert into driver(driverName,driverPhone,lastLocation,driverState) values
 ('LongCH','456456456','',0),
 ('VinhHNQ','321321321','',0),
 ('NhatNQ','321321322','',1);
 
-insert into request(clientName,clientPhone,clientAddress,requestState,countSearch,idDriver,startX,startY,idStaff,requestTime) values
-('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,0,0,1,'2018-11-18 13:17:17'),
-('VinhHNQ','321321321',N'227 Nguyen Van Cu',1,1,1,1,1,1,'2018-11-18 13:17:17'),
-('NhatNQ','321321322',N'227 Nguyen Van Cu',2,1,2,2,2,1,'2018-11-18 13:17:17');
+insert into request(clientName,clientPhone,clientAddress,requestState,countSearch,idDriver,startX,startY,idStaff,requestTime,clientAddressNoSign) values
+('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,0,0,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('VinhHNQ','321321321',N'227 Nguyen Van Cu',1,1,1,1,1,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('NhatNQ','321321322',N'227 Nguyen Van Cu',2,1,2,2,2,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu');
 
 
 

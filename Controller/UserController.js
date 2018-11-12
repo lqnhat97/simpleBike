@@ -10,7 +10,7 @@ router.post('/', (req, res) => {
             console.log(userEntity);
             var acToken = authRepos.generateAccessToken(userEntity);
             var rfToken = authRepos.generateRefreshToken();
-            authRepos.updateRefreshToken(userEntity.staffUsername, rfToken).then(value=>{
+            authRepos.updateRefreshToken(userEntity.idStaff,userEntity.staffRole, rfToken).then(value=>{
                 res.json({
                     auth: true,
                     user: userEntity,
