@@ -22,9 +22,15 @@ app.use(cors());
 app.use('/login', (req,res)=>{
     res.render('./login')
 })
+
 app.use('/contact', (req,res)=>{
     res.render('./contact')
 })
+
+app.use('/request', (req,res)=>{
+    res.render('./request_management')
+})
+
 app.use('/bookBike',verifyAccessToken, customer);
 app.use('/api/users', userController);
 app.use('/admin', verifyAccessToken, requestController);
