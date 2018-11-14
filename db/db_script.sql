@@ -64,7 +64,11 @@ insert into request(clientName,clientPhone,clientAddress,requestState,countSearc
 ('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
 ('VinhHNQ','321321321',N'227 Nguyen Van Cu',1,1,1,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
 ('NhatNQ','321321322',N'227 Nguyen Van Cu',2,1,2,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
-('NhatNQ','321321322',N'323/4 Lê Quang Định',2,1,2,10.811472,106.6881282,1,'2018-11-18 13:17:17',N'323/4 Le Quang Dinh');
+('NhatNQ','321321322',N'323/4 Lê Quang Định',2,1,2,10.811472,106.6881282,1,'2018-11-18 13:17:17',N'323/4 Le Quang Dinh'),
+('LongHC', '456453356',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('VinhHQ','321321221',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('NhatNHQ','321324422',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),
+('NhatN','321344322',N'323/4 Lê Quang Định',0,0,NULL,10.811472,106.6881282,1,'2018-11-18 13:17:17',N'323/4 Le Quang Dinh');
 
 
 

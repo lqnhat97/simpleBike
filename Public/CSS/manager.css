@@ -1,31 +1,41 @@
 .table-fixed thead {
     width: 95.7%;
-    }
-    .table-fixed tbody {
+}
+
+.table-fixed tbody {
     height: 400px;
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
-    }
-    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
     display: block;
-    }
-    .table-fixed tbody td, .table-fixed thead > tr> th {
+}
+
+.table-fixed tbody td,
+.table-fixed thead>tr>th {
     display: inline-block;
     border-bottom-width: 0;
-    }
+}
 
-    .table-fixed thead > tr> th{
-        background-color: gray; 
-        color: aliceblue;
-    }
+.table-fixed thead>tr>th {
+    background-color: gray;
+    color: aliceblue;
+}
 
-    .col10per{
-        width: 10%;
-    }
-    .col15per{
-        width: 15%;
-    }
-    .col20per{
-        width: 20%;
-    }
+.col10per {
+    width: 10%;
+}
+
+.col15per {
+    width: 15%;
+}
+
+.col20per {
+    width: 20%;
+}

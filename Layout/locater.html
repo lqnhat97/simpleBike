@@ -1,80 +1,154 @@
 <!DOCTYPE <!DOCTYPE html>
-
 <html>
 
-
 <head>
-
-<meta charset="utf-8" />
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-<title>SimpleBiker</title>
-
-<!-- Bootstrap4-->
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    
-<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
-    
-<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
-    
-<script src="../Public/JS/driver.js" type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" href="../Public/CSS/driver.css">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SimpleBiker</title>
+  <!-- Bootstrap4-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+  <script src="http://js.api.here.com/v3/3.0/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../Public/JS/driver.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="../Public/CSS/locater.css">
 </head>
 
-
 <body>
+  <div class="container">
+    <div class="header">
+      <h1>SimpleBike Request Location</h1>
+    </div>
+    <div class="body">
+      <h4>Request list:</h4>
+      <div>
+        <table class="table table-bordered">
+          <tr>
+            <td style="width:60%;">
+              <table class="table table-bordered table-active table-fixed" id="tableRequest">
+                <thead>
+                  <tr>
+                    <th class="col5per">#</th>
+                    <th class="col20per">Name</th>
+                    <th class="col20per">Phone</th>
+                    <th class="col30per">Address</th>
+                    <th class="col20per" style="color:gray">*</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
+                  <tr>
+                    <td class="col5per">1</td>
+                    <td class="col20per">Smith</td>
+                    <td class="col20per">123123123</td>
+                    <td class="col30per">227 Nguyen Van Cu</td>
+                    <td class="col20per"><button type="button">Click Me!</button></td>
+                  </tr>
 
-<div class="container" align="center">
+                </tbody>
+              </table>
+            </td>
+            <td style="width:40%;">
+              <div id="mapContainer">
+              </div>
+            </td>
+        </table>
 
 
-<h2 style="align: center;">Định vị Request</h2>
-<div id="mapContainer" style="width:100%;">
+      </div>
 
-<table style="width:100%; border-width: thin;">
-  <tr>
-    <th>#</th>
-    <th>Name</th> 
-    <th>Phone</th>
-<th>Address</th>
-<th></th>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Smith</td> 
-    <td>123123123</td>
-<td>227 Nguyen Van Cu</td>
-<td><button type="button">Click Me!</button></td>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>Smith</td> 
-    <td>123123123</td>
-<td>227 Nguyen Van Cu</td>
-<td><button type="button">Click Me!</button></td>
-  </tr>
-</table>
-</div>
-
-
-</div>
-
-
+    </div>
+  </div>
 </body>
-
 
 </html>
