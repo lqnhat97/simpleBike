@@ -62,4 +62,11 @@ router.post('/driverLocationById', (req, res) => {
     })
 })
 
+router.get('/noLocate',(req,res) =>{
+    var data = {"state":0};
+    requestRepos.loadStateRequest(data).then(row=>{
+        res.json(row);
+    })
+})
+
 module.exports = router;
