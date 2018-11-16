@@ -43,16 +43,6 @@ $(document).ready(() => {
             lng: position.coords.longitude
         });
         map.addObject(marker);
-        // Create an info bubble object at a specific geographic location:
-        /*var bubble = new H.ui.InfoBubble({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        }, {
-            content: 'lat: ' + position.coords.latitude + ', lng:' + position.coords.longitude
-        });
-
-        // Add info bubble to the UI:
-        ui.addBubble(bubble);*/
     }
 
     // Enable the event system on the map instance:
@@ -144,21 +134,35 @@ $(document).ready(() => {
                 }
             });
 
-            /*// Create a marker for the start point:
+            // Create a marker for the start point:
             var startMarker = new H.map.Marker({
                 lat: startPoint.latitude,
                 lng: startPoint.longitude
             });
-
+            var startBubble = new H.ui.InfoBubble({
+                lat: startPoint.latitude,
+                lng: startPoint.longitude
+            }, {
+                content: 'Driver Position'
+            });
             // Create a marker for the end point:
             var endMarker = new H.map.Marker({
                 lat: endPoint.latitude,
                 lng: endPoint.longitude
-            });*/
-
+            });
+            var endBubble = new H.ui.InfoBubble({
+                lat: endPoint.latitude,
+                lng: endPoint.longitude
+            }, {
+                content: 'Client Positon'
+            });
             // Add the route polyline and the two markers to the map:
             map.addObject(routeLine);
-
+            map.addObject(startMarker);
+            map.addObject(endMarker);
+            // Add info bubble to the UI:
+            ui.addBubble(startBubble);
+            ui.addBubble(endBubble);
             // Set the map's viewport to make the whole route visible:
             map.setViewBounds(routeLine.getBounds());
         }
@@ -178,6 +182,8 @@ $(document).ready(() => {
             // representation mode 'display'
             'representation': 'display'
         };
+
+
         // Call calculateRoute() with the routing parameters,
         // the callback and an error callback function (called if a
         // communication error occurs):
@@ -188,6 +194,15 @@ $(document).ready(() => {
     }
 
 
+    function geo(destination) {
+        destination = destination.replace(/ /g, '+') + '+Ho+Chi+Minh';
+        geocodingParams = {
+            searchText: destination
+        }
+        geocoder.geocode(geocodingParams, onResult, function (e) {
+            alert(e);
+        });
+    }
     //END HEREMAP set up
     var token = localStorage.getItem("key");
     var assignedRequest = [];
@@ -213,9 +228,12 @@ $(document).ready(() => {
                         state = "Located";
                         break;
                     case 2:
+                        var combine = "" + element.idRequest + element.idDriver;
+                        console.log("a:" + combine);
                         assignedRequest.push(element);
                         state = "Assigned";
-                        guideHTML = "<button type='button' class='btn btn-success' name='guide' >Guide</button>"
+                        guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
+
                         var destination = element.clientAddress;
                         geo(destination);
                         break;
@@ -244,20 +262,9 @@ $(document).ready(() => {
     }
     getAll();
 
-    function geo(destination) {
-        destination = destination.replace(/ /g, '+')+'+Ho+Chi+Minh';
-        geocodingParams = {
-            searchText: destination
-        }
-        geocoder.geocode(geocodingParams, onResult, function (e) {
-            alert(e);
-        });
-        console.log(onResult);
-    }
+
 
     function getRequestByState(state_param, state_text) {
-        console.log(state_param);
-
         $.ajax({
             url: 'http://localhost:8088/admin/state',
             type: 'POST',
@@ -275,9 +282,10 @@ $(document).ready(() => {
             var guideHTML = "*";
             var index = 0;
             data.forEach(element => {
-                console.log(element.requestState);
+                var combine = "" + element.idRequest + element.idDriver;
+                console.log("a:" + combine);
                 if (element.requestState == 2) {
-                    guideHTML = "<button type='button' class='btn btn-success' name='guide' >Guide</button>"
+                    guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
                     var destination = element.clientAddress;
                     geo(destination);
                 }
@@ -296,13 +304,57 @@ $(document).ready(() => {
         })
     }
 
+    function routingById(id, position) {
+        $.ajax({
+            url: 'http://localhost:8088/admin/stateById',
+            type: 'POST',
+            beforeSend: function (request) {
+                request.setRequestHeader("x-access-token", token);
+            },
+            data: JSON.stringify({
+                "id": id
+            }),
+            contentType: 'application/json',
+            dataType: 'json',
+            timeout: 10000
+        }).done(function (data) {
+            routing(position, {
+                "lat": data[0].startX,
+                "lng": data[0].startY
+            });
+        })
+    }
+
+    function getDriverLastLocationById(idRequest, idDriver) {
+
+        $.ajax({
+            url: 'http://localhost:8088/admin/driverLocationById',
+            type: 'POST',
+            beforeSend: function (request) {
+                request.setRequestHeader("x-access-token", token);
+            },
+            data: JSON.stringify({
+                "id": idDriver
+            }),
+            contentType: 'application/json',
+            dataType: 'json',
+            timeout: 5000
+        }).done(function (data) {
+            var res = data[0].lastLocation.split(",");
+            var pos = {
+                "lat": res[0],
+                "lng": res[1]
+            }
+            routingById(idRequest, pos);
+        })
+    }
+
 
     $('.dropdown-item').click(function () {
         $('#dropdownMenuButton').text($(this).text());
     })
     $('#all').click(function () {
         $('#user_info').html("");
-        //console.log($('#user_info').html(""));
         getAll()
     });
     $('#isNotLocated').click(function () {
@@ -335,15 +387,16 @@ $(document).ready(() => {
         console.log(map.getObjects()[1].getPosition().lat);
         console.log(map.getObjects()[1].getPosition().lng);
         */
+       
+        map.removeObjects(map.getObjects());
+        if(ui.getBubbles().length>0){
+            ui.getBubbles().forEach(element => {
+                ui.removeBubble(element);
+            });
+        }
+        var string = $(this).attr('id').split('');
+        console.log(string[0]);
+        getDriverLastLocationById(string[0], string[1]);
         $("#mapContainer").show();
-        routing({
-            lat: map.getObjects()[0].getPosition().lat,
-            lng: map.getObjects()[0].getPosition().lng
-        }, {
-            lat: map.getObjects()[1].getPosition().lat,
-            lng: map.getObjects()[1].getPosition().lng
-        })
     })
-
-
 })
