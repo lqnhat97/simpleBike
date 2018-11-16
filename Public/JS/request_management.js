@@ -53,12 +53,12 @@ $(document).ready(() => {
     map.addEventListener('tap', function (evt) {
         // Log 'tap' and 'mouse' events:
         map.removeObjects(map.getObjects());
-        console.log(map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY));
+       
         var position = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
         marker = new H.map.Marker(position);
         map.addObject(marker);
         map.setCenter(position);
-        console.log(evt.type, evt.currentPointer.type);
+        //console.log(evt.type, evt.currentPointer.type);
     });
 
     // Create the parameters for the geocoding request:
@@ -229,7 +229,7 @@ $(document).ready(() => {
                         break;
                     case 2:
                         var combine = "" + element.idRequest + element.idDriver;
-                        console.log("a:" + combine);
+                        
                         assignedRequest.push(element);
                         state = "Assigned";
                         guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
@@ -278,12 +278,12 @@ $(document).ready(() => {
             dataType: 'json',
             timeout: 10000
         }).done(function (data) {
-            console.log(data);
+           
             var guideHTML = "*";
             var index = 0;
             data.forEach(element => {
                 var combine = "" + element.idRequest + element.idDriver;
-                console.log("a:" + combine);
+               
                 if (element.requestState == 2) {
                     guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
                     var destination = element.clientAddress;
@@ -306,7 +306,7 @@ $(document).ready(() => {
 
     function routingById(id, position) {
         $.ajax({
-            url: 'http://localhost:8088/admin/stateById',
+            url: 'http://localhost:8088/admin/requestById',
             type: 'POST',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
@@ -328,7 +328,7 @@ $(document).ready(() => {
     function getDriverLastLocationById(idRequest, idDriver) {
 
         $.ajax({
-            url: 'http://localhost:8088/admin/driverLocationById',
+            url: 'http://localhost:8088/admin/driverById',
             type: 'POST',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
@@ -345,6 +345,10 @@ $(document).ready(() => {
                 "lat": res[0],
                 "lng": res[1]
             }
+            $('.minidriver-feild #name').val(data[0].driverName) ;
+            $('.minidriver-feild #phone').val(data[0].driverPhone) ;
+            $('.minidriver-feild #location').val( data[0].lastLocation);
+            $('.minidriver-feild #state').val(data[0].driverState);            
             routingById(idRequest, pos);
         })
     }
@@ -382,11 +386,6 @@ $(document).ready(() => {
         getRequestByState(5, "No bike");
     })
     $(document).on('click', "button[name='guide']", function () {
-        /*console.log(map.getObjects()[0].getPosition().lat);
-        console.log(map.getObjects()[0].getPosition().lng);
-        console.log(map.getObjects()[1].getPosition().lat);
-        console.log(map.getObjects()[1].getPosition().lng);
-        */
        
         map.removeObjects(map.getObjects());
         if(ui.getBubbles().length>0){
@@ -395,8 +394,8 @@ $(document).ready(() => {
             });
         }
         var string = $(this).attr('id').split('');
-        console.log(string[0]);
+        
         getDriverLastLocationById(string[0], string[1]);
-        $("#mapContainer").show();
+       
     })
 })

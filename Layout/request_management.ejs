@@ -17,6 +17,7 @@
     <!--request_management.js-->
     <script src="/JS/request_management.js"></script>
     <link rel="stylesheet" href="/CSS/manager.css">
+   
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <!--HEREMAP-->
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -66,7 +67,33 @@
         <div id="guide_info" class="row" style="border-width: 10px; border-color: chartreuse;">
             <div id="mapContainer" class="col-sm-6" >
             </div>
-            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <div class="minidriver-header">
+                    <h1>Driver info</h1>
+                </div>
+                <div class="minidriver-body">
+                    <form>  
+                        <table>
+                            <tr>
+                                <td class="minidriver-label">Name:</td>
+                                <td class="minidriver-feild"><input type="text" id="name"  disabled></td>
+                            </tr>
+                            <tr>
+                                <td class="minidriver-label">Phone:</td>
+                                <td class="minidriver-feild"><input type="tel" id="phone" disabled></td>
+                            </tr>
+                            <tr>
+                                <td class="minidriver-label">Location:</td>
+                                <td class="minidriver-feild"><input type="text" id="location"  disabled></td>
+                            </tr>
+                            <tr>
+                                <td class="minidriver-label">State:</td>
+                                <td class="minidriver-feild"><input type="text" id="state"  disabled></td>
+                            </tr>
+                        </table>
+                    </form>>
+                </div>
+            </div>
         </div>
     </div>
    

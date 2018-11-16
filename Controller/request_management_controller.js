@@ -34,7 +34,7 @@ router.post('/state', (req, res) => {
     })
 })
 
-router.post('/stateById', (req, res) => {
+router.post('/requestById', (req, res) => {
     requestRepos.loadRequestById(req.body).then(row => {
         if (row.length > 0) {
             res.json(row);
@@ -48,8 +48,8 @@ router.post('/stateById', (req, res) => {
     })
 })
 
-router.post('/driverLocationById', (req, res) => {
-    requestRepos.loadDriverLastLocation(req.body).then(row => {
+router.post('/driverById', (req, res) => {
+    requestRepos.loadDriverById(req.body).then(row => {
         if (row.length > 0) {
             res.json(row);
         }else{
