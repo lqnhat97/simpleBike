@@ -23,7 +23,7 @@ body{
 }
 
 .table-fixed tbody {
-    height: 400px;
+    height: 440px;
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
@@ -62,6 +62,25 @@ h4{
 }
 .col30per{
     width: 30%;
+}
+
+.locateButton{
+    text-align: center;
+}
+
+.locate{
+    background:  rgb(39, 179, 183);
+    color: white;
+    padding: 2% 8% 2% 8%;
+}
+
+#accept{
+    padding: 5% 38% 5% 38%;
+    margin: 1%;
+    color: white;
+    font-size: 20pt;
+    background:  rgb(39, 179, 183);
+    font-weight: bold;
 }
 
 
