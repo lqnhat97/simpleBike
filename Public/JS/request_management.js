@@ -53,7 +53,7 @@ $(document).ready(() => {
     map.addEventListener('tap', function (evt) {
         // Log 'tap' and 'mouse' events:
         map.removeObjects(map.getObjects());
-       
+
         var position = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
         marker = new H.map.Marker(position);
         map.addObject(marker);
@@ -229,7 +229,7 @@ $(document).ready(() => {
                         break;
                     case 2:
                         var combine = "" + element.idRequest + element.idDriver;
-                        
+
                         assignedRequest.push(element);
                         state = "Assigned";
                         guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
@@ -278,12 +278,12 @@ $(document).ready(() => {
             dataType: 'json',
             timeout: 10000
         }).done(function (data) {
-           
+
             var guideHTML = "*";
             var index = 0;
             data.forEach(element => {
                 var combine = "" + element.idRequest + element.idDriver;
-               
+
                 if (element.requestState == 2) {
                     guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
                     var destination = element.clientAddress;
@@ -345,10 +345,10 @@ $(document).ready(() => {
                 "lat": res[0],
                 "lng": res[1]
             }
-            $('.minidriver-feild #name').val(data[0].driverName) ;
-            $('.minidriver-feild #phone').val(data[0].driverPhone) ;
-            $('.minidriver-feild #location').val( data[0].lastLocation);
-            $('.minidriver-feild #state').val(data[0].driverState);            
+            $('.minidriver-feild #name').val(data[0].driverName);
+            $('.minidriver-feild #phone').val(data[0].driverPhone);
+            $('.minidriver-feild #location').val(data[0].lastLocation);
+            $('.minidriver-feild #state').val(data[0].driverState);
             routingById(idRequest, pos);
         })
     }
@@ -385,17 +385,45 @@ $(document).ready(() => {
         $('#user_info').html("");
         getRequestByState(5, "No bike");
     })
+
+    jQuery.fn.visible = function () {
+        return this.css('visibility', 'visible');
+    };
+
+    jQuery.fn.invisible = function () {
+        return this.css('visibility', 'hidden');
+    };
+
+    jQuery.fn.visibilityToggle = function () {
+        return this.css('visibility', function (i, visibility) {
+            return (visibility == 'visible') ? 'hidden' : 'visible';
+        });
+    };
+   
     $(document).on('click', "button[name='guide']", function () {
-       
+        
+        if($(this).hasClass('btn-danger')){
+            $('#guide_info').visibilityToggle();
+            $(this).removeClass('btn-danger');
+            $(this).addClass('btn-success');
+        }
+        else{
+            $('#guide_info').visible();
+            $(this).removeClass('btn-success');
+            $(this).addClass('btn-danger');
+            $("button[name='guide']").not(this).removeClass('btn-danger');
+            $("button[name='guide']").not(this).addClass('btn-success');
+        }
+      
         map.removeObjects(map.getObjects());
-        if(ui.getBubbles().length>0){
+        if (ui.getBubbles().length > 0) {
             ui.getBubbles().forEach(element => {
                 ui.removeBubble(element);
             });
         }
         var string = $(this).attr('id').split('');
-        
+
         getDriverLastLocationById(string[0], string[1]);
-       
+        
     })
 })
