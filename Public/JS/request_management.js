@@ -193,7 +193,7 @@ $(document).ready(() => {
             });
     }
 
-
+    //here map geocoder function
     function geo(destination) {
         destination = destination.replace(/ /g, '+') + '+Ho+Chi+Minh';
         geocodingParams = {
@@ -207,6 +207,7 @@ $(document).ready(() => {
     var token = localStorage.getItem("key");
     var assignedRequest = [];
 
+    //get all the request
     function getAll() {
         $.ajax({
             url: 'http://localhost:8088/admin',
@@ -263,7 +264,7 @@ $(document).ready(() => {
     getAll();
 
 
-
+    //get all request by specify state
     function getRequestByState(state_param, state_text) {
         $.ajax({
             url: 'http://localhost:8088/admin/state',
@@ -304,6 +305,7 @@ $(document).ready(() => {
         })
     }
 
+    //find the route by from driver to client location
     function routingById(id, position) {
         $.ajax({
             url: 'http://localhost:8088/admin/requestById',
@@ -325,7 +327,8 @@ $(document).ready(() => {
         })
     }
 
-    function getDriverLastLocationById(idRequest, idDriver) {
+    //get the driver infomation by id
+    function getDriverById(idRequest, idDriver) {
 
         $.ajax({
             url: 'http://localhost:8088/admin/driverById',
@@ -386,6 +389,8 @@ $(document).ready(() => {
         getRequestByState(5, "No bike");
     })
 
+
+    //function set visibility of a component
     jQuery.fn.visible = function () {
         return this.css('visibility', 'visible');
     };
@@ -399,7 +404,8 @@ $(document).ready(() => {
             return (visibility == 'visible') ? 'hidden' : 'visible';
         });
     };
-   
+    //
+
     $(document).on('click', "button[name='guide']", function () {
         
         if($(this).hasClass('btn-danger')){
@@ -423,7 +429,7 @@ $(document).ready(() => {
         }
         var string = $(this).attr('id').split('');
 
-        getDriverLastLocationById(string[0], string[1]);
+        getDriverById(string[0], string[1]);
         
     })
 })
