@@ -35,6 +35,7 @@ CREATE TABLE `request` (
   `startY` float DEFAULT NULL,
   `idStaff` int(11) NOT NULL,
   `requestTime` datetime NOT NULL,
+  `clientNote` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idRequest`),
   FOREIGN KEY ( `idDriver`) REFERENCES driver( `idDriver`),
   FOREIGN KEY ( `idStaff`) REFERENCES staff( `idStaff`)

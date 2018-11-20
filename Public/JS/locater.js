@@ -117,7 +117,7 @@ $(document).ready(() => {
         }
     });
 
-    //Haversine distance formula
+    //Haversine distance formula parameter is two coords array type [lat,long]
     function haversineDistance(coords1, coords2) {
         function toRad(x) {
           return x * Math.PI / 180;
