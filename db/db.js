@@ -41,3 +41,19 @@ exports.insert = sql => {
         });
     });
 }
+
+exports.update = sql => {
+    return new Promise((resolve, reject) => {
+        var cn = createConnection();
+        cn.connect();
+        cn.query(sql, (err, value) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(value);
+            }
+
+            cn.end();
+        });
+    });
+}

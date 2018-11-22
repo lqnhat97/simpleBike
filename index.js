@@ -14,6 +14,7 @@ var http = require('http').Server(app);
 var customer = require('./Controller/CustomerController');
 var userController = require('./Controller/UserController');
 var requestController = require('./Controller/request_management_controller');
+var driverController = require('./Controller/driver_controller');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -34,6 +35,7 @@ app.use('/request', (req,res)=>{
 app.use('/bookBike',verifyAccessToken, customer);
 app.use('/api/users', userController);
 app.use('/admin', verifyAccessToken, requestController);
+app.use('/driver',verifyAccessToken, driverController);
 
 var port = process.env.PORT || 8088;
 http.listen(port, () => {
