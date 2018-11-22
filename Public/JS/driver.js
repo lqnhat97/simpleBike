@@ -46,14 +46,14 @@ $(document).ready(function () {
   var curr;
   map.addEventListener('tap', function (evt) {
     var tap = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
- //   if (navigator.geolocation) {
- //     navigator.geolocation.getCurrentPosition(loadLocation);
- //   } else {
- //     alert("Geolocation is not supported by this browser.");
- //   }
-  //  console.log(positionTap);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(loadLocation);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+    console.log(positionTap);
     getCurrLocation();
- //   console.log(getCurrLocation());
+   console.log(getCurrLocation());
     console.log(curr);
     console.log(tap);
     console.log(Distance(tap,curr));
