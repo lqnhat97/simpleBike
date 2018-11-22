@@ -24,9 +24,11 @@ $(document).ready(function () {
 
   map.addObject(currentMarker);
 
-  getLocation()
+  var ui = H.ui.UI.createDefault(map, maptypes);
+  var mapEvents = new H.mapevents.MapEvents(map);
+  var behavior = new H.mapevents.Behavior(mapEvents);
 
-  $('#mapContainer').click(getLocation());
+  getLocation();
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -35,34 +37,51 @@ $(document).ready(function () {
       alert("Geolocation is not supported by this browser.");
     }
   }
-
   function loadCurrentLocation(position) {
     map.setCenter({
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
+  }
+  var curr;
+  map.addEventListener('tap', function (evt) {
+    var tap = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
+ //   if (navigator.geolocation) {
+ //     navigator.geolocation.getCurrentPosition(loadLocation);
+ //   } else {
+ //     alert("Geolocation is not supported by this browser.");
+ //   }
+  //  console.log(positionTap);
+    getCurrLocation();
+ //   console.log(getCurrLocation());
+    console.log(curr);
+    console.log(tap);
+    console.log(Distance(tap,curr));
+});
 
-    currentMarker.setPosition({
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    });
+  
+
+  function checkDistance(positionTap) {
+    navigator.geolocation.getCurrentPosition(loadLocation)
+    var d = Distance(positionTap,);
+    console.log(d);
   }
 
-  function sphericalDistanceBetween(position1, position2) {
-    dLongitude = position2.coords.longitude - position1.coords.longitude
-    dLatitude = position2.coords.latitude - position1.coords.latitude
-    R = 6371 //Bán kính trái đât trong kilometers
-
-    //Locali một số hàm toán
-    sin = math.sin
-    cos = math.cos
-    sqrt = math.sqrt
-    atan2 = math.atan2
-
-    a = (sin(dLatitude / 2)) ^ 2 + cos(point1.y) * cos(point2.y) * (sin(dLongitude / 2)) ^ 2
-    c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    d = R * c
-
-    return d * math.pi / 180
+  function getCurrLocation(){
+    navigator.geolocation.getCurrentPosition(function(position){curr = position;});
   }
+
+  function Distance(pTap, pCurr){
+    console.log("tap" +pTap);
+    console.log("curr" +pCurr);
+    const toRad = x => (x * Math.PI) / 180;
+    dLng = toRad(pTap.lng - pCurr.lng);
+    dLat = toRad(pTap.lat - pCurr.lng);
+    R = 6371; //Bán kính trái đât trong kilometers
+  a = Math.sin(dLat/2) * Math.sin(dLat/2) 
+        + Math.cos(toRad(pTap.lat)) * Math.cos(toRad(pCurr.coords.latitude)) 
+        * Math.sin(dLng/2) * Math.sin(dLng/2);  
+  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c * 1000;
+  };
 })
