@@ -27,6 +27,7 @@ $(document).ready(function () {
   var ui = H.ui.UI.createDefault(map, maptypes);
   var mapEvents = new H.mapevents.MapEvents(map);
   var behavior = new H.mapevents.Behavior(mapEvents);
+  var curr;
 
   getLocation();
 
@@ -37,51 +38,52 @@ $(document).ready(function () {
       alert("Geolocation is not supported by this browser.");
     }
   }
+
   function loadCurrentLocation(position) {
     map.setCenter({
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
+    curr = position;
   }
-  var curr;
+ 
   map.addEventListener('tap', function (evt) {
-    var tap = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(loadLocation);
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-    console.log(positionTap);
+
     getCurrLocation();
-   console.log(getCurrLocation());
-    console.log(curr);
-    console.log(tap);
-    console.log(Distance(tap,curr));
-});
+    var tap = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
 
-  
+    distance = Distance(tap, curr);
 
-  function checkDistance(positionTap) {
-    navigator.geolocation.getCurrentPosition(loadLocation)
-    var d = Distance(positionTap,);
-    console.log(d);
+    if (distance > 100) {
+
+      alert("Your location is wrong!");
+
+    } else {
+
+      result = confirm("Update your location?");
+      if (result) {
+        console.log("save");
+      }
+    }
+  });
+
+  function getCurrLocation() {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      curr = position;
+    });
   }
 
-  function getCurrLocation(){
-    navigator.geolocation.getCurrentPosition(function(position){curr = position;});
-  }
-
-  function Distance(pTap, pCurr){
-    console.log("tap" +pTap);
-    console.log("curr" +pCurr);
+  function Distance(pTap, pCurr) {
+    console.log(pTap);
+    console.log(pCurr);
     const toRad = x => (x * Math.PI) / 180;
-    dLng = toRad(pTap.lng - pCurr.lng);
-    dLat = toRad(pTap.lat - pCurr.lng);
+    dLng = toRad(pTap.lng - pCurr.coords.longitude);
+    dLat = toRad(pTap.lat - pCurr.coords.latitude);
     R = 6371; //Bán kính trái đât trong kilometers
-  a = Math.sin(dLat/2) * Math.sin(dLat/2) 
-        + Math.cos(toRad(pTap.lat)) * Math.cos(toRad(pCurr.coords.latitude)) 
-        * Math.sin(dLng/2) * Math.sin(dLng/2);  
-  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c * 1000;
+    a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(pTap.lat)) * Math.cos(toRad(pCurr.coords.latitude)) *
+      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c * 1000;
   };
 })
