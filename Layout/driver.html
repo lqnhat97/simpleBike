@@ -25,12 +25,27 @@
 
 <body>
     <div class="container">
-
         <div id="mapContainer">
         </div>
+        <div id="ready" class="view">
+            <label id="statuslb">OFF</label>
+            <label class="switch">
+                <input type="checkbox" id="status">
+                <span class="slider round"></span>
+                <label>OFF</label>
+            </label>
+        </div>
+        <div id="request" class="view">
+            <label>You have a request at: <span id="address">227 Nguyen Van Cu</span></label>
+            <button id="accept">Accept</button>
+            <button id="cancel">Cancel</button>
+        </div>
 
+        <div id="moving" class="view">
+                <button id="start">Start</button>
+                <button id="finish">Finish</button>
+        </div>
     </div>
-
 </body>
 
 </html>

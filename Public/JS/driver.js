@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   var platform = new H.service.Platform({
     'app_id': 'sipLqTSr0Fh7wPEbdaiE',
     'app_code': 'nUrp5EdLy0MiCiywzDD1Dg'
@@ -47,6 +48,14 @@ $(document).ready(function () {
     curr = position;
   }
  
+  $(document).on('click', "#status", function () {
+    var stt = document.getElementById("statuslb");
+    if (stt.innerHTML == "OFF") {
+        stt.innerHTML = "ON";
+    } else {
+        stt.innerHTML = "OFF";
+    }
+})
   map.addEventListener('tap', function (evt) {
 
     getCurrLocation();
@@ -59,12 +68,12 @@ $(document).ready(function () {
       alert("Your location is wrong!");
 
     } else {
-
       result = confirm("Update your location?");
       if (result) {
         console.log("save");
       }
     }
+    
   });
 
   function getCurrLocation() {
