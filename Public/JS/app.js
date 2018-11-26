@@ -1,3 +1,4 @@
+var socket=io();
 $(document).ready(function () {
     $("form").submit(function (e) {
         e.preventDefault();
@@ -21,6 +22,10 @@ $(document).ready(function () {
             $("#notify").text("Đã ghi nhận thành công thông tin khách hàng!");
             $("#notify").css("display","block");
             $("#notify").css("color","blue");
+            socket.emit("send-request");
+            socket.on("get-request",()=>{
+                console.log("ok");
+            })
         }).catch(err=>{
             console.log(err);
             $("#notify").text("Đã xảy ra lỗi");

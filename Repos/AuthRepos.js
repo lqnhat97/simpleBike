@@ -53,7 +53,7 @@ exports.updateRefreshToken = (idStaff, staffRole, rfToken) => {
         db.insert(sql) // delete
             .then(value => {
                 var rdt = moment().format('YYYY-MM-DD HH:mm:ss');
-                sql = `insert into token values(${idStaff}, ${staffRole}, '${rfToken}', '${rdt}')`;
+                sql = `insert into token values(${idStaff}, '${staffRole}', '${rfToken}', '${rdt}')`;
                 return db.insert(sql);
             })
             .then(value => resolve(value))

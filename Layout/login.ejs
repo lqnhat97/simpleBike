@@ -14,6 +14,8 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   <!--OwnScript-->
   <link rel="stylesheet" href="/CSS/login.css">
   <script src="/JS/login.js"></script>
@@ -29,16 +31,19 @@
             <h5 class="card-title text-center">Đăng nhập</h5>
             <form class="form-signin">
               <div class="form-label-group">
-                <input type="text" id="inputUserName" name="inputUserName" class="form-control" placeholder="Tài khoản" required autofocus>
+                <input type="text" id="inputUserName" name="inputUserName" class="form-control" placeholder="Tài khoản"
+                  required autofocus>
                 <label for="inputUserName">Tài khoản</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Mật khẩu" required>
+                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Mật khẩu"
+                  required>
                 <label for="inputPassword">Mật khẩu</label>
               </div>
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Đăng nhập</button>
               <hr class="my-4">
+              <input type="checkbox" data-toggle="toggle" id="role" data-on="Tài xế" data-off="Nhân viên">
             </form>
           </div>
         </div>

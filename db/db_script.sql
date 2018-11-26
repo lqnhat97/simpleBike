@@ -49,7 +49,7 @@ CREATE TABLE `token` (
   `staffRole` varchar(45) NOT NULL,
   `token` varchar(255) NOT NULL,
   `time` datetime NOT NULL,
-  PRIMARY KEY (`idStaff`)
+  PRIMARY KEY (`idStaff`,`staffRole`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

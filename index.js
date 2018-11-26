@@ -28,8 +28,16 @@ app.use('/contact', (req,res)=>{
     res.render('./contact')
 })
 
+app.use('/locate',(req,res)=>{
+    res.render('./locater')
+})
+
 app.use('/request', (req,res)=>{
     res.render('./request_management')
+})
+
+app.use('/bike',(req,res)=>{
+    res.render('./driver')
 })
 
 app.use('/bookBike',verifyAccessToken, customer);
@@ -40,4 +48,11 @@ app.use('/driver',verifyAccessToken, driverController);
 var port = process.env.PORT || 8088;
 http.listen(port, () => {
     console.log('Connected at port:' + port);
+})
+var io= require('socket.io')(http);
+io.on("connection",(socket)=>{
+    console.log("connected");
+    socket.on("send-request",()=>{
+        io.sockets.emit("get-request");
+    })
 })
