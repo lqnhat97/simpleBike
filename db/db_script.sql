@@ -5,6 +5,8 @@ Use simplebike;
 CREATE TABLE `driver` (
   `idDriver` int(11) NOT NULL AUTO_INCREMENT,
   `driverName` varchar(45) NOT NULL,
+  `driverUserName` varchar(45)NOT null,
+  `driverPasswords` varchar(45)NOT null,
   `driverPhone` varchar(45) NOT NULL,
   `lastLocation` varchar(45) default NULL,
   `driverState` int(11) NOT NULL,/* 0: Busy 1: Ready*/
@@ -56,10 +58,10 @@ insert into staff(staffName,staffPhone,staffUsername,staffPassword,staffRole) va
 ('VinhHNQ','321321321','VinhHNQ','456456',2),
 ('NhatNQ','321321322','NhatNQ','123123',3);
 
-insert into driver(driverName,driverPhone,lastLocation,driverState) values
-('LongCH','456456456','10.76299,106.68252',0),
-('VinhHNQ','321321321','11.76299,106.68252',0),
-('NhatNQ','321321322','12.76299,106.68252',1);
+insert into driver(driverName,driverPhone,lastLocation,driverState,driverUsername,driverPasswords) values
+('LongCH','456456456','10.76299,106.68252',0,'LongCH','123456'),
+('VinhHNQ','321321321','11.76299,106.68252',0,'VinhHNQ','123456'),
+('NhatNQ','321321322','12.76299,106.68252',1,'NhatNQ','123456');
 
 insert into request(clientName,clientPhone,clientAddress,requestState,countSearch,idDriver,startX,startY,idStaff,requestTime,clientAddressNoSign) values
 ('LongCH', '456456456',N'227 Nguyen Van Cu',0,0,NULL,10.76299,106.68252,1,'2018-11-18 13:17:17',N'227 Nguyen Van Cu'),

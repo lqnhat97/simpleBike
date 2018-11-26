@@ -46,16 +46,64 @@ $(document).ready(function () {
       lng: position.coords.longitude
     });
     curr = position;
+    changeDriverLastLocation(curr);
   }
- 
+
+  function changeDriverLastLocation(location){
+    var idDriver= 1;
+    var lastLocation = ""+ location.coords.latitude+","+location.coords.longitude;
+    console.log(lastLocation);
+    $.ajax({
+      url: 'http://localhost:8088/driver/updateState',
+      beforeSend: function (request) {
+        request.setRequestHeader("x-access-token", token);
+      },
+      data: JSON.stringify({
+        "id": idDriver,
+        "lastLocation": lastLocation
+      }),
+      type: 'POST',
+      dataType: 'json',
+      timeout: 10000
+    })
+  }
+
   $(document).on('click', "#status", function () {
     var stt = document.getElementById("statuslb");
+    var driverState,idDriver;
+    var idDriver;
     if (stt.innerHTML == "OFF") {
-        stt.innerHTML = "ON";
+      stt.innerHTML = "ON";
+      driverState = 1;
+      changeDriverStatus(idDriver,driverState);
+      
     } else {
-        stt.innerHTML = "OFF";
+      stt.innerHTML = "OFF";
+      driverState = 0;
+      changeDriverStatus(idDriver,driverState);
     }
-})
+   
+  })
+  var token = localStorage.getItem("key");
+
+  function changeDriverStatus(idDriver,driverState) {
+    idDriver = 1;
+    $.ajax({
+      url: 'http://localhost:8088/driver/updateState',
+      beforeSend: function (request) {
+        request.setRequestHeader("x-access-token", token);
+      },
+      data: JSON.stringify({
+        "id": idDriver,
+        "driverState": driverState
+      }),
+      type: 'POST',
+      dataType: 'json',
+      timeout: 10000
+    })
+  }
+
+
   map.addEventListener('tap', function (evt) {
 
     getCurrLocation();
@@ -73,7 +121,7 @@ $(document).ready(function () {
         console.log("save");
       }
     }
-    
+
   });
 
   function getCurrLocation() {
@@ -81,6 +129,8 @@ $(document).ready(function () {
       curr = position;
     });
   }
+
+
 
   function Distance(pTap, pCurr) {
     console.log(pTap);
