@@ -46,7 +46,6 @@ $(document).ready(function () {
       lng: position.coords.longitude
     });
     curr = position;
-    changeDriverLastLocation(curr);
   }
 
   function changeDriverLastLocation(location){
@@ -72,13 +71,13 @@ $(document).ready(function () {
     var stt = document.getElementById("statuslb");
     var driverState,idDriver;
     var idDriver;
-    if (stt.innerHTML == "OFF") {
-      stt.innerHTML = "ON";
+    if (stt.innerHTML == "STANDBY") {
+      stt.innerHTML = "READY";
       driverState = 1;
       changeDriverStatus(idDriver,driverState);
       
     } else {
-      stt.innerHTML = "OFF";
+      stt.innerHTML = "STANDBY";
       driverState = 0;
       changeDriverStatus(idDriver,driverState);
     }
@@ -119,6 +118,7 @@ $(document).ready(function () {
       result = confirm("Update your location?");
       if (result) {
         console.log("save");
+        changeDriverLastLocation(curr);
       }
     }
 
