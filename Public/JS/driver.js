@@ -49,7 +49,7 @@ $(document).ready(function () {
   }
 
   function changeDriverLastLocation(location){
-    var idDriver= 1;
+    var idDriver= localStorage.getItem("idDriver");
     var lastLocation = ""+ location.coords.latitude+","+location.coords.longitude;
     console.log(lastLocation);
     $.ajax({
@@ -73,12 +73,10 @@ $(document).ready(function () {
     var idDriver;
     if (stt.innerHTML == "STANDBY") {
       stt.innerHTML = "READY";
-      driverState = 1;
       changeDriverStatus(idDriver,driverState);
       
     } else {
       stt.innerHTML = "STANDBY";
-      driverState = 0;
       changeDriverStatus(idDriver,driverState);
     }
    
@@ -86,7 +84,7 @@ $(document).ready(function () {
   var token = localStorage.getItem("key");
 
   function changeDriverStatus(idDriver,driverState) {
-    idDriver = 1;
+    idDriver = localStorage.getItem("idDriver");
     $.ajax({
       url: 'http://localhost:8088/driver/updateState',
       beforeSend: function (request) {
