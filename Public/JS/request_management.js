@@ -1,3 +1,4 @@
+var socket =io();
 $(document).ready(() => {
     //HEREMAP set up
     var platform = new H.service.Platform({
@@ -219,6 +220,7 @@ $(document).ready(() => {
             timeout: 10000
         }).done(function (data) {
             var state;
+            $("#user_info").html("");
             data.forEach(element => {
                 var guideHTML = "*";
                 switch (element.requestState) {
@@ -262,6 +264,14 @@ $(document).ready(() => {
         })
     }
     getAll();
+
+    socket.on("get-request", () => {
+        setTimeout(getAll, 1000);
+    });
+
+    socket.on("get-request-located",()=>{
+        setTimeout(getAll,1000);
+    })
 
 
     //get all request by specify state

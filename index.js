@@ -1,12 +1,12 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    handlebars=require('handlebars'),
+    handlebars = require('handlebars'),
     morgan = require('morgan');
 var cors = require('cors');
 app = express();
 app.use(express.static('Public'));
 app.set("view engine", "ejs");
-app.set("views","./Layout");
+app.set("views", "./Layout");
 
 var verifyAccessToken = require('./Repos/AuthRepos').verifyAccessToken;
 
@@ -20,39 +20,42 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/login', (req,res)=>{
+app.use('/login', (req, res) => {
     res.render('./login')
 })
 
-app.use('/contact', (req,res)=>{
+app.use('/contact', (req, res) => {
     res.render('./contact')
 })
 
-app.use('/locate',(req,res)=>{
+app.use('/locate', (req, res) => {
     res.render('./locater')
 })
 
-app.use('/request', (req,res)=>{
+app.use('/request', (req, res) => {
     res.render('./request_management')
 })
 
-app.use('/bike',(req,res)=>{
+app.use('/bike', (req, res) => {
     res.render('./driver')
 })
 
-app.use('/bookBike',verifyAccessToken, customer);
+app.use('/bookBike', verifyAccessToken, customer);
 app.use('/api/users', userController);
 app.use('/admin', verifyAccessToken, requestController);
-app.use('/driver',verifyAccessToken, driverController);
+app.use('/driver', verifyAccessToken, driverController);
 
 var port = process.env.PORT || 8088;
 http.listen(port, () => {
     console.log('Connected at port:' + port);
 })
-var io= require('socket.io')(http);
-io.on("connection",(socket)=>{
-    console.log("connected");
-    socket.on("send-request",()=>{
+var io = require('socket.io')(http);
+io.on("connection", (socket) => {
+    socket.on("send-request", () => {
         io.sockets.emit("get-request");
+    })
+    socket.on("request-located",()=>{
+        console.log("located")
+        io.sockets.emit("get-request-located");
     })
 })

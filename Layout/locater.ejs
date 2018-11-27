@@ -13,6 +13,7 @@
     crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="/CSS/locater.css">
   <!--HEREMAP-->
   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -45,7 +46,7 @@
                     <th class="col20per" style="color:gray;">*</th>
                   </tr>
                 </thead>
-                <tbody id="info_request"> 
+                <tbody id="info_request">
                 </tbody>
               </table>
               <span id="empty">No request no locate!</span>
@@ -57,7 +58,7 @@
             </td>
         </table>
 
-          
+
       </div>
 
     </div>

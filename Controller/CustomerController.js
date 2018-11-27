@@ -12,11 +12,9 @@ router.post('/', (req, res) => {
     axios.get('https://geocoder.api.here.com/6.2/geocode.json?app_id=gDzN0nMCji5lof7dXffC&app_code=LTEbJMPNijbdRxULdUrFmg&searchtext='+destination).then(response=>{
         destination =  response.data.Response.View[0].Result[0].Location.NavigationPosition[0];
         customerRepos.saveInfo(data,destination).then(value=>{
-            console.log(value);
         }).catch(err=>{
             console.log(err);
         })
-        console.log(destination);
         res.json(destination);
     }).catch(err=>{
         console.log(err);

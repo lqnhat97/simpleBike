@@ -13,7 +13,7 @@ $(document).ready(function () {
             beforeSend: function(request){
                 request.setRequestHeader("x-access-token",localStorage.getItem("key"))
             },
-            url: 'http://localhost:8088/bookBike/',
+            url: '/bookBike',
             type: 'POST',
             data: fdata,
             dataType: 'json',
@@ -23,9 +23,6 @@ $(document).ready(function () {
             $("#notify").css("display","block");
             $("#notify").css("color","blue");
             socket.emit("send-request");
-            socket.on("get-request",()=>{
-                console.log("ok");
-            })
         }).catch(err=>{
             console.log(err);
             $("#notify").text("Đã xảy ra lỗi");

@@ -13,11 +13,12 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--request_management.js-->
     <script src="/JS/request_management.js"></script>
     <link rel="stylesheet" href="/CSS/manager.css">
-   
+
     <script src="https://twitter.github.io/typeahead.js/js/handlebars.js"></script>
     <!--HEREMAP-->
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -65,39 +66,39 @@
             </tbody>
         </table>
         <div>
-        <div id="guide_info" class="row" style="border-width: 10px; border-color: chartreuse; visibility: hidden;">
-            <div id="mapContainer" class="col-sm-8" >
-            </div>
-            <div class="col col-sm-4">
-                <div class="minidriver-header">
-                    <h1>Driver info</h1>
+            <div id="guide_info" class="row" style="border-width: 10px; border-color: chartreuse; visibility: hidden;">
+                <div id="mapContainer" class="col-sm-8">
                 </div>
-                <div class="minidriver-body">
-                    <form>  
-                        <table>
-                            <tr>
-                                <td class="minidriver-label">Name:</td>
-                                <td class="minidriver-feild"><input type="text" id="name"  disabled></td>
-                            </tr>
-                            <tr>
-                                <td class="minidriver-label">Phone:</td>
-                                <td class="minidriver-feild"><input type="tel" id="phone" disabled></td>
-                            </tr>
-                            <tr>
-                                <td class="minidriver-label">Location:</td>
-                                <td class="minidriver-feild"><input type="text" id="location"  disabled></td>
-                            </tr>
-                            <tr>
-                                <td class="minidriver-label">State:</td>
-                                <td class="minidriver-feild"><input type="text" id="state"  disabled></td>
-                            </tr>
-                        </table>
-                    </form>>
+                <div class="col col-sm-4">
+                    <div class="minidriver-header">
+                        <h1>Driver info</h1>
+                    </div>
+                    <div class="minidriver-body">
+                        <form>
+                            <table>
+                                <tr>
+                                    <td class="minidriver-label">Name:</td>
+                                    <td class="minidriver-feild"><input type="text" id="name" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="minidriver-label">Phone:</td>
+                                    <td class="minidriver-feild"><input type="tel" id="phone" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="minidriver-label">Location:</td>
+                                    <td class="minidriver-feild"><input type="text" id="location" disabled></td>
+                                </tr>
+                                <tr>
+                                    <td class="minidriver-label">State:</td>
+                                    <td class="minidriver-feild"><input type="text" id="state" disabled></td>
+                                </tr>
+                            </table>
+                        </form>>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-   
+
 </body>
 
 </html>

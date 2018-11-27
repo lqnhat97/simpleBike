@@ -2,7 +2,6 @@ var db = require('../db/db');
 var moment = require('moment');
 
 exports.saveInfo = (customerEntity, destination) => {
-    console.log(customerEntity);
     var time = moment().format('YYYY-MM-DD HH:mm:ss');
     var unsignAddress = customerEntity.cus_des;
     var sql = `insert into request(clientName,clientPhone,clientAddress,requestState,countSearch,idDriver,startX,startY,idStaff,requestTime,clientAddressNoSign) values
