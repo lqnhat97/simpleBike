@@ -79,10 +79,8 @@ router.post('/located', (req, res) => {
             id: req.body.idRequest
         };
         requestRepos.loadRequestById(dataResponse).then(data => {
-            console.log("ok");
             res.sendStatus(200);
-            console.log(global.io);
-            global.io.sockets.emit("request-driver");
+            global.io.sockets.emit("request-driver",data[0]);
             global.io.sockets.emit("get-request");
         }).catch(err => {
             console.log(err);

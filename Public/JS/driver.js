@@ -1,17 +1,10 @@
 var socket = io();
 $(document).ready(function () {
-  socket.on("request-driver",()=>{
-    alert("hello");
-  })
-  $("#myBtn").click(function () {
-    $("#myModal").modal();
-  });
-
   $('#status').bootstrapToggle({
     onstyle: 'danger',
     offstyle: 'light'
   });
-  
+
   var platform = new H.service.Platform({
     'app_id': 'sipLqTSr0Fh7wPEbdaiE',
     'app_code': 'nUrp5EdLy0MiCiywzDD1Dg'
@@ -81,20 +74,36 @@ $(document).ready(function () {
 
   var idDriver = localStorage.getItem("idDriver");
   var driverState = 0;
-    $("#status").change(() => {
-        if ($("#status").prop("checked"))
-        driverState = 1;
-        else driverState = 0;
-        changeDriverStatus(driverState);
-    })
-
+  $("#status").change(() => {
+    if ($("#status").prop("checked"))
+      driverState = 1;
+    else driverState = 0;
+    changeDriverStatus(driverState);
+  })
+  socket.on("request-driver", (data) => {
+    if (driverState == 1) {
+      $("#myModal").modal();
+      $("#cus_name").html(data.clientName);
+      $("#cus_address").html(data.clientAddress);
+      $("#cus_tel").html(data.clientPhone);
+      $("#cus_note").html(data.clientNote);
+      driverState = 0;
+    }
+  })
+  // Get the modal
+  var modal = document.getElementById('myModal');
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "visible";
+    }
+  }
   var token = localStorage.getItem("key");
+
   function changeDriverStatus(driverState) {
     var fdata = JSON.stringify({
       "id": idDriver,
       "driverState": driverState
     });
-    console.log(fdata);
     $.ajax({
       contentType: 'application/json',
       url: '/driver/updateState',
