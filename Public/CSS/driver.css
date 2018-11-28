@@ -103,13 +103,34 @@ button {
     color: white;
     padding: 0 8% 0 8%;
     border-width: 0;
-    font-weight:bold;
+    font-weight: bold;
 }
 
-#accept , #start {
+#accept,
+#start {
     background-color: green;
 }
 
-#cancel , #finish {
+#cancel,
+#finish {
     background-color: red;
+}
+
+.modal-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+.spanTitle {
+    font-weight: bold;
+}
+
+.modal.fade {
+    opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+    -webkit-transform: translate(0);
+    -moz-transform: translate(0);
+    transform: translate(0);
 }

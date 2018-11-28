@@ -7,7 +7,6 @@ router.post('/', (req, res) => {
     userRepos.login(req.body,res).then(rows => {
         if (rows.length > 0) {
             var userEntity = rows[0];
-            console.log(userEntity);
             var acToken = authRepos.generateAccessToken(userEntity);
             var rfToken = authRepos.generateRefreshToken();
             if(req.body.role==1){

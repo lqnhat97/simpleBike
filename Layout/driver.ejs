@@ -13,6 +13,7 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <script src="http://js.api.here.com/v3/3.0/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
@@ -20,6 +21,8 @@
     <script src="http://js.api.here.com/v3/3.0/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://js.api.here.com/v3/3.0/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
     <script src="/JS/driver.js" type="text/javascript" charset="utf-8"></script>
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <link rel="stylesheet" href="/CSS/driver.css">
 </head>
 
@@ -28,22 +31,37 @@
         <div id="mapContainer">
         </div>
         <div id="ready" class="view">
-            <label id="statuslb">STANDBY</label>
-            <label class="switch">
-                <input type="checkbox" id="status">
-                <span class="slider round"></span>
-                
-            </label>
+            <input type="checkbox" data-toggle="toggle" id="status" data-on="Ready" data-off="Standby">
         </div>
-        <div id="request" class="view">
-            <label>You have a request at: <span id="address">227 Nguyen Van Cu</span></label>
-            <button id="accept">Accept</button>
-            <button id="cancel">Cancel</button>
-        </div>
-
         <div id="moving" class="view">
-                <button id="start">Start</button>
-                <button id="finish">Finish</button>
+            <button id="start">Start</button>
+            <button id="finish">Finish</button>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" id="myBtn">
+        Launch demo modal
+    </button>
+    <div class="modal" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bạn có yêu cầu chuyến xe mới !</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="request">
+                    <span class="spanTitle">Tên khách hàng: </span>
+                    <span id="cus_name">Vinh</span></br>
+                    <span class="spanTitle">Điểm đón: </span><span id="cus_address">227 Nguyen Van Cu</span></br>
+                    <span class="spanTitle">SĐT Khách hàng: </span><span id="cus_tel">123456</span></br>
+                    <span class="spanTitle">Ghi chú: </span><span id="cus_note">Ko co gi</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="accept">Đồng ý</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Từ chối</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

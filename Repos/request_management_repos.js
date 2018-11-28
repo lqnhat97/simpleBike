@@ -24,3 +24,7 @@ exports.updateRequest = (request) =>{
     var sql =`update request set startX = ${request.lat}, startY = ${request.lng}, requestState = ${request.state} where idRequest = ${request.idRequest};`
     return db.insert(sql);
 }
+
+exports.updateStateRequest = (request)=>{
+    var sql = `update request set requestState = ${request.state} where idRequest ${request.idRequest}`
+};

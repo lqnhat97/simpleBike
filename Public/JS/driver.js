@@ -1,5 +1,17 @@
+var socket = io();
 $(document).ready(function () {
+  socket.on("request-driver",()=>{
+    alert("hello");
+  })
+  $("#myBtn").click(function () {
+    $("#myModal").modal();
+  });
 
+  $('#status').bootstrapToggle({
+    onstyle: 'danger',
+    offstyle: 'light'
+  });
+  
   var platform = new H.service.Platform({
     'app_id': 'sipLqTSr0Fh7wPEbdaiE',
     'app_code': 'nUrp5EdLy0MiCiywzDD1Dg'
@@ -48,9 +60,9 @@ $(document).ready(function () {
     curr = position;
   }
 
-  function changeDriverLastLocation(location){
-    var idDriver= localStorage.getItem("idDriver");
-    var lastLocation = ""+ location.coords.latitude+","+location.coords.longitude;
+  function changeDriverLastLocation(location) {
+    var idDriver = localStorage.getItem("idDriver");
+    var lastLocation = "" + location.coords.latitude + "," + location.coords.longitude;
     console.log(lastLocation);
     $.ajax({
       url: 'http://localhost:8088/driver/updateState',
@@ -67,33 +79,29 @@ $(document).ready(function () {
     })
   }
 
-  $(document).on('click', "#status", function () {
-    var stt = document.getElementById("statuslb");
-    var driverState,idDriver;
-    var idDriver;
-    if (stt.innerHTML == "STANDBY") {
-      stt.innerHTML = "READY";
-      changeDriverStatus(idDriver,driverState);
-      
-    } else {
-      stt.innerHTML = "STANDBY";
-      changeDriverStatus(idDriver,driverState);
-    }
-   
-  })
-  var token = localStorage.getItem("key");
+  var idDriver = localStorage.getItem("idDriver");
+  var driverState = 0;
+    $("#status").change(() => {
+        if ($("#status").prop("checked"))
+        driverState = 1;
+        else driverState = 0;
+        changeDriverStatus(driverState);
+    })
 
-  function changeDriverStatus(idDriver,driverState) {
-    idDriver = localStorage.getItem("idDriver");
+  var token = localStorage.getItem("key");
+  function changeDriverStatus(driverState) {
+    var fdata = JSON.stringify({
+      "id": idDriver,
+      "driverState": driverState
+    });
+    console.log(fdata);
     $.ajax({
-      url: 'http://localhost:8088/driver/updateState',
+      contentType: 'application/json',
+      url: '/driver/updateState',
       beforeSend: function (request) {
         request.setRequestHeader("x-access-token", token);
       },
-      data: JSON.stringify({
-        "id": idDriver,
-        "driverState": driverState
-      }),
+      data: fdata,
       type: 'POST',
       dataType: 'json',
       timeout: 10000

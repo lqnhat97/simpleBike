@@ -49,7 +49,7 @@ var port = process.env.PORT || 8088;
 http.listen(port, () => {
     console.log('Connected at port:' + port);
 })
-var io = require('socket.io')(http);
+global.io = require('socket.io')(http);
 io.on("connection", (socket) => {
     socket.on("send-request", () => {
         io.sockets.emit("get-request");

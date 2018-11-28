@@ -119,9 +119,6 @@ $(document).ready(() => {
                 dataType: 'json',
                 contentType: 'application/json',
                 timeout: 10000
-            }).done(data => {
-                socket.emit("request-located");
-                getNoLocate();
             })
         }
     });

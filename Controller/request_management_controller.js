@@ -74,11 +74,26 @@ router.get('/noLocate', (req, res) => {
 })
 
 router.post('/located', (req, res) => {
-    requestRepos.updateRequest(req.body).then(data => {
-        dataResponse={"status":200, "idRequest":req.body.idRequest};
-        res.json(dataResponse);
+    requestRepos.updateRequest(req.body).then(() => {
+        var dataResponse = {
+            id: req.body.idRequest
+        };
+        requestRepos.loadRequestById(dataResponse).then(data => {
+            console.log("ok");
+            res.sendStatus(200);
+            console.log(global.io);
+            global.io.sockets.emit("request-driver");
+            global.io.sockets.emit("get-request");
+        }).catch(err => {
+            console.log(err);
+        })
+
     }).catch(err => {
         console.log(err);
     })
+})
+
+router.post('/updateRequestState', (req, res) => {
+    requestRepos.updateStateRequest(req.body).then(data)
 })
 module.exports = router;
