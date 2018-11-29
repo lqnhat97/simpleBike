@@ -95,6 +95,7 @@ $(document).ready(() => {
             request[i].startY = position.lng;
         }
     });
+    
     $('#accept').click(function () {
         if (i >= 0) {
             var lat = request[i].startX;

@@ -68,33 +68,159 @@ $(document).ready(function () {
       }),
       type: 'POST',
       dataType: 'json',
-      timeout: 10000
+      timeout: 1000
     })
   }
 
   var idDriver = localStorage.getItem("idDriver");
   var driverState = 0;
   $("#status").change(() => {
+
     if ($("#status").prop("checked"))
       driverState = 1;
     else driverState = 0;
     changeDriverStatus(driverState);
   })
+
+  var requestLocation;
   socket.on("request-driver", (data) => {
     if (driverState == 1) {
-      $("#myModal").modal();
+      driverState = 0;
+      changeDriverStatus(driverState);
+      $("#status").bootstrapToggle('off');
+      $("#myModal").modal({
+        backdrop: 'static',
+        keyboard: false
+      });
       $("#cus_name").html(data.clientName);
       $("#cus_address").html(data.clientAddress);
       $("#cus_tel").html(data.clientPhone);
       $("#cus_note").html(data.clientNote);
-      driverState = 0;
+      requestLocation = {lat: data.startX, lng:data.startY};
     }
   })
+
+  $("#accept").click(function () {
+    driverState = 0;
+    changeDriverStatus(driverState);
+    $("#status").bootstrapToggle('off');
+    //Socket something back
+    routing(requestLocation, {
+      lat: curr.coords.latitude,
+      lng: curr.coords.longitude
+    });
+  })
+
+
+  //Routing
+  // Define a callback function to process the routing response:
+  var onRoutingResult = function (result) {
+    var route,
+      routeShape,
+      //startPoint,
+      //endPoint,
+      linestring;
+    if (result.response.route) {
+      // Pick the first route from the response:
+      route = result.response.route[0];
+      // Pick the route's shape:
+      routeShape = route.shape;
+
+      // Create a linestring to use as a point source for the route line
+      linestring = new H.geo.LineString();
+
+      // Push all the points in the shape into the linestring:
+      routeShape.forEach(function (point) {
+        var parts = point.split(',');
+        linestring.pushLatLngAlt(parts[0], parts[1]);
+      });
+
+      // Retrieve the mapped positions of the requested waypoints:
+      startPoint = route.waypoint[0].mappedPosition;
+      endPoint = route.waypoint[1].mappedPosition;
+
+      // Create a polyline to display the route:
+      var routeLine = new H.map.Polyline(linestring, {
+        style: {
+          strokeColor: 'blue',
+          lineWidth: 10
+        }
+      });
+
+      // Create a marker for the start point:
+      var startMarker = new H.map.Marker({
+        lat: startPoint.latitude,
+        lng: startPoint.longitude
+      });
+      var startBubble = new H.ui.InfoBubble({
+        lat: startPoint.latitude,
+        lng: startPoint.longitude
+      }, {
+        content: 'Driver Position'
+      });
+      // Create a marker for the end point:
+      var endMarker = new H.map.Marker({
+        lat: endPoint.latitude,
+        lng: endPoint.longitude
+      });
+      var endBubble = new H.ui.InfoBubble({
+        lat: endPoint.latitude,
+        lng: endPoint.longitude
+      }, {
+        content: 'Client Positon'
+      });
+      // Add the route polyline and the two markers to the map:
+      map.addObject(routeLine);
+      map.addObject(startMarker);
+      map.addObject(endMarker);
+      // Add info bubble to the UI:
+      ui.addBubble(startBubble);
+      ui.addBubble(endBubble);
+      // Set the map's viewport to make the whole route visible:
+      map.setViewBounds(routeLine.getBounds());
+    }
+  };
+  
+  // Get an instance of the routing service:
+  var router = platform.getRoutingService();
+
+  function routing(position1, position2) {
+    var routingParameters = {
+      // The routing mode:
+      'mode': 'fastest;car',
+      // The start point of the route:
+      'waypoint0': 'geo!' + position1.lat + ',' + position1.lng,
+      // The end point of the route:
+      'waypoint1': 'geo!' + position2.lat + ',' + position2.lng,
+      // To retrieve the shape of the route we choose the route
+      // representation mode 'display'
+      'representation': 'display'
+    };
+
+    console.log(routingParameters);
+
+    // Call calculateRoute() with the routing parameters,
+    // the callback and an error callback function (called if a
+    // communication error occurs):
+    router.calculateRoute(routingParameters, onRoutingResult,
+      function (error) {
+        alert(error.message);
+      });
+  }
+
+  $("#deny").click(function () {
+    driverState = 1;
+    changeDriverStatus(driverState);
+    $("#status").bootstrapToggle('on');
+  })
+
+
+
   // Get the modal
   var modal = document.getElementById('myModal');
   window.onclick = function (event) {
-    if (event.target == modal) {
-      modal.style.display = "visible";
+    if (event.target !== modal) {
+      return;
     }
   }
   var token = localStorage.getItem("key");
@@ -113,7 +239,7 @@ $(document).ready(function () {
       data: fdata,
       type: 'POST',
       dataType: 'json',
-      timeout: 10000
+      timeout: 1000
     })
   }
 
