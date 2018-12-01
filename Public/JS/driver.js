@@ -5,6 +5,7 @@ $(document).ready(function () {
     offstyle: 'light'
   });
 
+  $("#moving").hide();
   var platform = new H.service.Platform({
     'app_id': 'sipLqTSr0Fh7wPEbdaiE',
     'app_code': 'nUrp5EdLy0MiCiywzDD1Dg'
@@ -23,12 +24,9 @@ $(document).ready(function () {
       }
     });
 
-  var currentMarker = new H.map.Marker({
-    lat: 0,
-    lng: 0
-  });
 
-  map.addObject(currentMarker);
+
+
 
   var ui = H.ui.UI.createDefault(map, maptypes);
   var mapEvents = new H.mapevents.MapEvents(map);
@@ -51,6 +49,12 @@ $(document).ready(function () {
       lng: position.coords.longitude
     });
     curr = position;
+    console.log(curr);
+    var currentMarker = new H.map.Marker({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    });
+    map.addObject(currentMarker);
   }
 
   function changeDriverLastLocation(location) {
@@ -84,20 +88,27 @@ $(document).ready(function () {
 
   var requestLocation;
   socket.on("request-driver", (data) => {
-    if (driverState == 1) {
-      driverState = 0;
-      changeDriverStatus(driverState);
-      $("#status").bootstrapToggle('off');
-      $("#myModal").modal({
-        backdrop: 'static',
-        keyboard: false
-      });
-      $("#cus_name").html(data.clientName);
-      $("#cus_address").html(data.clientAddress);
-      $("#cus_tel").html(data.clientPhone);
-      $("#cus_note").html(data.clientNote);
-      requestLocation = {lat: data.startX, lng:data.startY};
-    }
+    data.id.forEach(element => {
+      if (element == (localStorage.getItem("idDriver")-1)) {
+        if (driverState == 1) {
+          driverState = 0;
+          changeDriverStatus(driverState);
+          $("#status").bootstrapToggle('off');
+          $("#myModal").modal({
+            backdrop: 'static',
+            keyboard: false
+          });
+          $("#cus_name").html(data.clientName);
+          $("#cus_address").html(data.clientAddress);
+          $("#cus_tel").html(data.clientPhone);
+          $("#cus_note").html(data.clientNote);
+          requestLocation = {
+            lat: data.startX,
+            lng: data.startY
+          };
+        }
+      }
+    })
   })
 
   $("#accept").click(function () {
@@ -109,6 +120,8 @@ $(document).ready(function () {
       lat: curr.coords.latitude,
       lng: curr.coords.longitude
     });
+    $('#myModal').modal('hide');
+    $('#moving').show();
   })
 
 
@@ -180,7 +193,7 @@ $(document).ready(function () {
       map.setViewBounds(routeLine.getBounds());
     }
   };
-  
+
   // Get an instance of the routing service:
   var router = platform.getRoutingService();
 
@@ -196,12 +209,6 @@ $(document).ready(function () {
       // representation mode 'display'
       'representation': 'display'
     };
-
-    console.log(routingParameters);
-
-    // Call calculateRoute() with the routing parameters,
-    // the callback and an error callback function (called if a
-    // communication error occurs):
     router.calculateRoute(routingParameters, onRoutingResult,
       function (error) {
         alert(error.message);
@@ -245,8 +252,9 @@ $(document).ready(function () {
 
 
   map.addEventListener('tap', function (evt) {
-
-    getCurrLocation();
+    navigator.geolocation.getCurrentPosition(function (position) {
+      curr = position;
+    });
     var tap = map.screenToGeo(evt.currentPointer.viewportX, evt.currentPointer.viewportY);
 
     distance = Distance(tap, curr);
@@ -265,17 +273,8 @@ $(document).ready(function () {
 
   });
 
-  function getCurrLocation() {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      curr = position;
-    });
-  }
-
-
-
   function Distance(pTap, pCurr) {
-    console.log(pTap);
-    console.log(pCurr);
+
     const toRad = x => (x * Math.PI) / 180;
     dLng = toRad(pTap.lng - pCurr.coords.longitude);
     dLat = toRad(pTap.lat - pCurr.coords.latitude);

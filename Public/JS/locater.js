@@ -69,6 +69,21 @@ $(document).ready(() => {
             } else $('empty').show();
         })
     }
+    //function set visibility of a component
+    jQuery.fn.visible = function () {
+        return this.css('visibility', 'visible');
+    };
+
+    jQuery.fn.invisible = function () {
+        return this.css('visibility', 'hidden');
+    };
+
+    jQuery.fn.visibilityToggle = function () {
+        return this.css('visibility', function (i, visibility) {
+            return (visibility == 'visible') ? 'hidden' : 'visible';
+        });
+    };
+
     // Enable the event system on the map instance:
     $(document).on('click', ".locate", function () {
         i = $(this).attr('id') - 1;
@@ -80,7 +95,7 @@ $(document).ready(() => {
             lat: request[i].startX,
             lng: request[i].startY
         });
-
+        $('#mapContainer').visible();
     })
     // Add event listener:
     map.addEventListener('tap', function (evt) {
@@ -123,5 +138,7 @@ $(document).ready(() => {
             })
         }
     });
+
+    
 
 })

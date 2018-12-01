@@ -1,3 +1,4 @@
+var socket=io();
 $(document).ready(() => {
     var role = 0;
     $("#role").change(() => {
