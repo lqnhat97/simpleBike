@@ -110,7 +110,11 @@ router.post('/located', (req, res) => {
 })
 
 router.post('/updateRequestState', (req, res) => {
-    requestRepos.updateStateRequest(req.body).then(data)
+    requestRepos.updateStateRequest(req.body);
+})
+
+router.post('/updateRequestDriver', (req, res) => {
+    requestRepos.updateRequestDriver(req.body);
 })
 
 function indexOfMin(arr) {

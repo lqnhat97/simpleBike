@@ -49,7 +49,7 @@ $(document).ready(function () {
       lng: position.coords.longitude
     });
     curr = position;
-    console.log(curr);
+    
     var currentMarker = new H.map.Marker({
       lat: position.coords.latitude,
       lng: position.coords.longitude
@@ -60,7 +60,7 @@ $(document).ready(function () {
   function changeDriverLastLocation(location) {
     var idDriver = localStorage.getItem("idDriver");
     var lastLocation = "" + location.coords.latitude + "," + location.coords.longitude;
-    console.log(lastLocation);
+   
     $.ajax({
       url: 'http://localhost:8088/driver/updateState',
       beforeSend: function (request) {
@@ -87,9 +87,10 @@ $(document).ready(function () {
   })
 
   var requestLocation;
+  var idRequest;
   socket.on("request-driver", (data) => {
     data.id.forEach(element => {
-      if (element == (localStorage.getItem("idDriver")-1)) {
+      if (element == (localStorage.getItem("idDriver") - 1)) {
         if (driverState == 1) {
           driverState = 0;
           changeDriverStatus(driverState);
@@ -103,9 +104,11 @@ $(document).ready(function () {
           $("#cus_tel").html(data.clientPhone);
           $("#cus_note").html(data.clientNote);
           requestLocation = {
-            lat: data.startX,
-            lng: data.startY
+            lat: data.data.startX,
+            lng: data.data.startY
           };
+
+          idRequest = data.data.idRequest;
         }
       }
     })
@@ -116,22 +119,78 @@ $(document).ready(function () {
     changeDriverStatus(driverState);
     $("#status").bootstrapToggle('off');
     //Socket something back
-    routing(requestLocation, {
+    routing( {
       lat: curr.coords.latitude,
       lng: curr.coords.longitude
-    });
+    },requestLocation);
     $('#myModal').modal('hide');
-    $('#moving').show();
+    $('#ready').hide();
+    changeRequestStatus(idRequest, 2);
+    changeRequestDriver(idRequest);
+    $('#moving').fadeIn("slow");
   })
 
+  $("#start").click(function () {
+    changeRequestStatus(idRequest, 3);
+    $(this).fadeOut();
+  })
+
+  $("#finish").click(function () {
+    driverState = 1;
+    changeDriverStatus(driverState);
+    $('#ready').show();
+    $('#moving').hide();
+    $("#status").bootstrapToggle('on');
+    $("#start").show();
+    changeRequestStatus(idRequest, 4);
+    map.removeObjects(map.getObjects());
+    getLocation();
+  })
+
+  function changeRequestDriver(idRequest) {
+    var idDriver = localStorage.getItem("idDriver")
+    var fdata = JSON.stringify({
+      "idRequest": idRequest,
+      "idDriver": idDriver
+    });
+    $.ajax({
+      contentType: 'application/json',
+      url: '/admin/updateRequestDriver',
+      beforeSend: function (request) {
+        request.setRequestHeader("x-access-token", token);
+      },
+      data: fdata,
+      type: 'POST',
+      dataType: 'json',
+      timeout: 1000
+    })
+  }
+
+  function changeRequestStatus(idRequest, state) {
+    var fdata = JSON.stringify({
+      "idRequest": idRequest,
+      "state": state
+    });
+    $.ajax({
+      contentType: 'application/json',
+      url: '/admin/updateRequestState',
+      beforeSend: function (request) {
+        request.setRequestHeader("x-access-token", token);
+      },
+      data: fdata,
+      type: 'POST',
+      dataType: 'json',
+      timeout: 1000
+    })
+  }
 
   //Routing
   // Define a callback function to process the routing response:
   var onRoutingResult = function (result) {
     var route,
       routeShape,
-      //startPoint,
-      //endPoint,
+      startPoint,
+      endPoint,
       linestring;
     if (result.response.route) {
       // Pick the first route from the response:
@@ -157,7 +216,8 @@ $(document).ready(function () {
         style: {
           strokeColor: 'blue',
           lineWidth: 10
-        }
+        },
+        arrows: { fillColor: 'white', frequency: 100, width: 0.8, length: 0.7 }
       });
 
       // Create a marker for the start point:
@@ -186,9 +246,11 @@ $(document).ready(function () {
       map.addObject(routeLine);
       map.addObject(startMarker);
       map.addObject(endMarker);
+
       // Add info bubble to the UI:
       ui.addBubble(startBubble);
       ui.addBubble(endBubble);
+    
       // Set the map's viewport to make the whole route visible:
       map.setViewBounds(routeLine.getBounds());
     }
@@ -207,8 +269,11 @@ $(document).ready(function () {
       'waypoint1': 'geo!' + position2.lat + ',' + position2.lng,
       // To retrieve the shape of the route we choose the route
       // representation mode 'display'
-      'representation': 'display'
+      'representation': 'display',
+      routeattributes: 'waypoints,summary,shape,legs',
+      maneuverattributes: 'direction,action',
     };
+    
     router.calculateRoute(routingParameters, onRoutingResult,
       function (error) {
         alert(error.message);
@@ -266,7 +331,7 @@ $(document).ready(function () {
     } else {
       result = confirm("Update your location?");
       if (result) {
-        console.log("save");
+       
         changeDriverLastLocation(curr);
       }
     }

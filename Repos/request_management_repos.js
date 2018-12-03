@@ -28,3 +28,7 @@ exports.updateRequest = (request) =>{
 exports.updateStateRequest = (request)=>{
     var sql = `update request set requestState = ${request.state} where idRequest ${request.idRequest}`
 };
+
+exports.updateRequestDriver = (request)=>{
+    var sql = `update request set idDriver = ${request.idDriver} where idRequest ${request.idRequest}`
+};

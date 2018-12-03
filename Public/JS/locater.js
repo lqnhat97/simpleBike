@@ -95,7 +95,7 @@ $(document).ready(() => {
             lat: request[i].startX,
             lng: request[i].startY
         });
-        $('#mapContainer').visible();
+        $('#mapAndAccept').visible();
     })
     // Add event listener:
     map.addEventListener('tap', function (evt) {
