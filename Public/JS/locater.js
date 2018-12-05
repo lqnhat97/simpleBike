@@ -42,7 +42,7 @@ $(document).ready(() => {
 
     function getNoLocate() {
         $.ajax({
-            url: 'http://localhost:8088/admin/noLocate',
+            url: '/admin/noLocate',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
             },
@@ -126,7 +126,7 @@ $(document).ready(() => {
             datasave = JSON.stringify(datasave);
             console.log(datasave);
             $.ajax({
-                url: 'http://localhost:8088/admin/located',
+                url: '/admin/located',
                 beforeSend: function (request) {
                     request.setRequestHeader("x-access-token", token);
                 },
