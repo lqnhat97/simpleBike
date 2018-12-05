@@ -211,7 +211,7 @@ $(document).ready(() => {
     //get all the request
     function getAll() {
         $.ajax({
-            url: 'http://localhost:8088/admin',
+            url: '/admin',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
             },
@@ -277,7 +277,7 @@ $(document).ready(() => {
     //get all request by specify state
     function getRequestByState(state_param, state_text) {
         $.ajax({
-            url: 'http://localhost:8088/admin/state',
+            url: '/admin/state',
             type: 'POST',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
@@ -318,7 +318,7 @@ $(document).ready(() => {
     //find the route by from driver to client location
     function routingById(id, position) {
         $.ajax({
-            url: 'http://localhost:8088/admin/requestById',
+            url: '/admin/requestById',
             type: 'POST',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);
@@ -341,7 +341,7 @@ $(document).ready(() => {
     function getDriverById(idRequest, idDriver) {
 
         $.ajax({
-            url: 'http://localhost:8088/admin/driverById',
+            url: '/admin/driverById',
             type: 'POST',
             beforeSend: function (request) {
                 request.setRequestHeader("x-access-token", token);

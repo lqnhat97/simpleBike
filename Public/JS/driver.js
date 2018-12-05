@@ -62,7 +62,7 @@ $(document).ready(function () {
     var lastLocation = "" + location.coords.latitude + "," + location.coords.longitude;
    
     $.ajax({
-      url: 'http://localhost:8088/driver/updateState',
+      url: '/driver/updateState',
       beforeSend: function (request) {
         request.setRequestHeader("x-access-token", token);
       },
