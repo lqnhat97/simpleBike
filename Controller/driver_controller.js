@@ -48,11 +48,15 @@ router.post('/getLastLocation',(req,res)=>{
 })
 
 router.post('/updateLastLocation',(req,res)=>{
-    driverRepo.updateDriverLastLocation(req.body);
+    driverRepo.updateDriverLastLocation(req.body).then(()=>{
+        res.status(200).end();
+    });
 })
 
 router.post('/updateState',(req,res)=>{
-    driverRepo.updateDriverState(req.body)
+    driverRepo.updateDriverState(req.body).then(()=>{
+        res.status(200).end();
+    });
 })
 
 router.get('/getNearestDriver',(req,res)=>{

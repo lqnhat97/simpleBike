@@ -1,5 +1,7 @@
 var socket = io();
 $(document).ready(function () {
+  var idDriver = localStorage.getItem("idDriver");
+
   $('#status').bootstrapToggle({
     onstyle: 'danger',
     offstyle: 'light'
@@ -24,10 +26,6 @@ $(document).ready(function () {
       }
     });
 
-
-
-
-
   var ui = H.ui.UI.createDefault(map, maptypes);
   var mapEvents = new H.mapevents.MapEvents(map);
   var behavior = new H.mapevents.Behavior(mapEvents);
@@ -49,34 +47,34 @@ $(document).ready(function () {
       lng: position.coords.longitude
     });
     curr = position;
-    
+
     var currentMarker = new H.map.Marker({
       lat: position.coords.latitude,
       lng: position.coords.longitude
     });
+    changeDriverLastLocation(position)
     map.addObject(currentMarker);
   }
 
   function changeDriverLastLocation(location) {
-    var idDriver = localStorage.getItem("idDriver");
     var lastLocation = "" + location.coords.latitude + "," + location.coords.longitude;
-   
+    var fdata = JSON.stringify({
+      "id": idDriver,
+      "lastLocation": lastLocation
+    });
     $.ajax({
-      url: '/driver/updateState',
+      contentType: 'application/json',
+      url: '/driver/updateLastLocation',
       beforeSend: function (request) {
         request.setRequestHeader("x-access-token", token);
       },
-      data: JSON.stringify({
-        "id": idDriver,
-        "lastLocation": lastLocation
-      }),
+      data:fdata ,
       type: 'POST',
       dataType: 'json',
       timeout: 1000
     })
   }
 
-  var idDriver = localStorage.getItem("idDriver");
   var driverState = 0;
   $("#status").change(() => {
 
@@ -89,6 +87,7 @@ $(document).ready(function () {
   var requestLocation;
   var idRequest;
   socket.on("request-driver", (data) => {
+    console.log(data);
     data.id.forEach(element => {
       if (element == (localStorage.getItem("idDriver") - 1)) {
         if (driverState == 1) {
@@ -99,10 +98,10 @@ $(document).ready(function () {
             backdrop: 'static',
             keyboard: false
           });
-          $("#cus_name").html(data.clientName);
-          $("#cus_address").html(data.clientAddress);
-          $("#cus_tel").html(data.clientPhone);
-          $("#cus_note").html(data.clientNote);
+          $("#cus_name").html(data.data.clientName);
+          $("#cus_address").html(data.data.clientAddress);
+          $("#cus_tel").html(data.data.clientPhone);
+          $("#cus_note").html(data.data.clientNote);
           requestLocation = {
             lat: data.data.startX,
             lng: data.data.startY
@@ -119,15 +118,17 @@ $(document).ready(function () {
     changeDriverStatus(driverState);
     $("#status").bootstrapToggle('off');
     //Socket something back
-    routing( {
+    routing({
       lat: curr.coords.latitude,
       lng: curr.coords.longitude
-    },requestLocation);
+    }, requestLocation);
     $('#myModal').modal('hide');
     $('#ready').hide();
     changeRequestStatus(idRequest, 2);
+    console.log(idRequest);
     changeRequestDriver(idRequest);
     $('#moving').fadeIn("slow");
+    socket.emit("send-request")
   })
 
   $("#start").click(function () {
@@ -148,7 +149,6 @@ $(document).ready(function () {
   })
 
   function changeRequestDriver(idRequest) {
-    var idDriver = localStorage.getItem("idDriver")
     var fdata = JSON.stringify({
       "idRequest": idRequest,
       "idDriver": idDriver
@@ -217,7 +217,12 @@ $(document).ready(function () {
           strokeColor: 'blue',
           lineWidth: 10
         },
-        arrows: { fillColor: 'white', frequency: 100, width: 0.8, length: 0.7 }
+        arrows: {
+          fillColor: 'white',
+          frequency: 100,
+          width: 0.8,
+          length: 0.7
+        }
       });
 
       // Create a marker for the start point:
@@ -250,7 +255,7 @@ $(document).ready(function () {
       // Add info bubble to the UI:
       ui.addBubble(startBubble);
       ui.addBubble(endBubble);
-    
+
       // Set the map's viewport to make the whole route visible:
       map.setViewBounds(routeLine.getBounds());
     }
@@ -273,7 +278,7 @@ $(document).ready(function () {
       routeattributes: 'waypoints,summary,shape,legs',
       maneuverattributes: 'direction,action',
     };
-    
+
     router.calculateRoute(routingParameters, onRoutingResult,
       function (error) {
         alert(error.message);
@@ -331,7 +336,7 @@ $(document).ready(function () {
     } else {
       result = confirm("Update your location?");
       if (result) {
-       
+
         changeDriverLastLocation(curr);
       }
     }

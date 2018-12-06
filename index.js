@@ -19,6 +19,9 @@ var driverController = require('./Controller/driver_controller');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cors());
+app.get('/',(req,res)=>{
+    res.redirect('/login');
+})
 
 app.use('/login', (req, res) => {
     res.render('./login')
@@ -53,9 +56,5 @@ global.io = require('socket.io')(http);
 io.on("connection", (socket) => {
     socket.on("send-request", () => {
         io.sockets.emit("get-request");
-    })
-    socket.on("request-located",()=>{
-        console.log("located")
-        io.sockets.emit("get-request-located");
     })
 })

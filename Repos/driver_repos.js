@@ -17,10 +17,10 @@ exports.loadDriverLastLocationById = (driver) => {
 
 exports.updateDriverLastLocation = (driver) => {
     var sql = `update driver set lastLocation = "${driver.lastLocation}"  where idDriver = ${driver.id};`;
-    db.update(sql);
+    return db.update(sql);
 }
 
 exports.updateDriverState = (driver) => {
     var sql = `update driver set driverState = ${driver.driverState}  where idDriver = ${driver.id};`;
-    db.update(sql);
+    return db.update(sql);
 }

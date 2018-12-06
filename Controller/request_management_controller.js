@@ -1,7 +1,7 @@
 var express = require('express'),
     requestRepos = require('../Repos/request_management_repos'),
     authRepos = require('../Repos/AuthRepos');
-    driverRepo = require('../Repos/driver_repos')
+driverRepo = require('../Repos/driver_repos')
 router = express.Router();
 
 router.post('/', (req, res) => {
@@ -84,20 +84,26 @@ router.post('/located', (req, res) => {
             var arrDis = [];
             driverRepo.loadDriver().then(dataDriver => {
                 dataDriver.forEach(element => {
-                    var splited = element.lastLocation.split(",");
-                    arrDis.push(Distance({
-                        lat: data[0].startX,
-                        lng: data[0].startY
-                    }, {
-                        lat: splited[0],
-                        lng: splited[1]
-                    }));
+                    if (element.driverState == 1) {
+                        var splited = element.lastLocation.split(",");
+                        arrDis.push(Distance({
+                            lat: data[0].startX,
+                            lng: data[0].startY
+                        }, {
+                            lat: splited[0],
+                            lng: splited[1]
+                        }));
+
+                    } else {
+                        arrDis.push(0)
+                    }
                 });
-                arrDis=indexOfMin(arrDis);
-                console.log(arrDis);
-            var dataEmit={data:data[0],id:arrDis};
-            console.log(dataEmit);
-            global.io.sockets.emit("request-driver", dataEmit);
+                arrDis = indexOfMin(arrDis);
+                var dataEmit = {
+                    data: data[0],
+                    id: arrDis
+                };
+                global.io.sockets.emit("request-driver", dataEmit);
             });
             global.io.sockets.emit("get-request");
         }).catch(err => {
@@ -110,11 +116,17 @@ router.post('/located', (req, res) => {
 })
 
 router.post('/updateRequestState', (req, res) => {
-    requestRepos.updateStateRequest(req.body);
+    requestRepos.updateStateRequest(req.body).then(()=>{
+        global.io.sockets.emit("get-request");
+        res.status(200).end();
+    });
 })
 
 router.post('/updateRequestDriver', (req, res) => {
-    requestRepos.updateRequestDriver(req.body);
+    requestRepos.updateRequestDriver(req.body).then(()=>{
+        global.io.sockets.emit("get-request");
+        res.status(200).end();
+    });
 })
 
 function indexOfMin(arr) {
@@ -124,8 +136,14 @@ function indexOfMin(arr) {
     var min = arr[0];
     var minIndex = [];
     for (var i = 1; i < arr.length; i++) {
-        if (arr[i] < min) {
-            min = arr[i];
+        if (min == 0) {
+            if (arr[i] > 0) {
+                min = arr[i];
+            }
+        } else {
+            if (arr[i] < min && arr[i] > 0) {
+                min = arr[i];
+            }
         }
     }
     for (var j = 0; j < arr.length; j++) {
@@ -133,7 +151,6 @@ function indexOfMin(arr) {
             minIndex.push(j);
         }
     }
-    console.log(minIndex);
     return minIndex;
 }
 

@@ -1,5 +1,9 @@
-var socket =io();
+var socket = io();
 $(document).ready(() => {
+    var state = {
+        type: -1,
+        name: ""
+    };
     //HEREMAP set up
     var platform = new H.service.Platform({
         'app_id': 'sipLqTSr0Fh7wPEbdaiE',
@@ -231,7 +235,7 @@ $(document).ready(() => {
                         state = "Located";
                         break;
                     case 2:
-                        var combine = "" + element.idRequest + element.idDriver;
+                        var combine = "" + element.idRequest + "_" + element.idDriver;
 
                         assignedRequest.push(element);
                         state = "Assigned";
@@ -266,12 +270,12 @@ $(document).ready(() => {
     getAll();
 
     socket.on("get-request", () => {
-        setTimeout(getAll, 1000);
+        if (state == -1) {
+            setTimeout(getAll, 1000);
+        } else {
+            getRequestByState(state.type,state.name);
+        }
     });
-
-    socket.on("get-request-located",()=>{
-        setTimeout(getAll,1000);
-    })
 
 
     //get all request by specify state
@@ -289,11 +293,11 @@ $(document).ready(() => {
             dataType: 'json',
             timeout: 10000
         }).done(function (data) {
-
+            $("#user_info").html("");
             var guideHTML = "*";
             var index = 0;
             data.forEach(element => {
-                var combine = "" + element.idRequest + element.idDriver;
+                var combine = "" + element.idRequest + "_" + element.idDriver;
 
                 if (element.requestState == 2) {
                     guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
@@ -366,36 +370,49 @@ $(document).ready(() => {
         })
     }
 
-
     $('.dropdown-item').click(function () {
         $('#dropdownMenuButton').text($(this).text());
     })
     $('#all').click(function () {
         $('#user_info').html("");
+        state.type = -1;
+        state.name="";
         getAll()
     });
     $('#isNotLocated').click(function () {
         $('#user_info').html("");
-        getRequestByState(0, "Is Not Located");
+        state.type = 0;
+        state.name="Is Not Located";
+        getRequestByState(state.type, state.name);
     })
     $('#located').click(function () {
         $('#user_info').html("");
+        state.type = 1;
+        state.name="Located";
         getRequestByState(1, "Located");
     })
     $('#assigned').click(function () {
         $('#user_info').html("");
+        state.type = 2;
+        state.name="Assigned";
         getRequestByState(2, "Assigned");
     })
     $('#moving').click(function () {
         $('#user_info').html("");
+        state.type = 3;
+        state.name="Moving";
         getRequestByState(3, "Moving");
     })
     $('#finish').click(function () {
         $('#user_info').html("");
+        state.type = 4;
+        state.name="Finish";
         getRequestByState(4, "Finish");
     })
     $('#noBike').click(function () {
         $('#user_info').html("");
+        state.type = 5;
+        state.name="No bike";
         getRequestByState(5, "No bike");
     })
 
@@ -417,29 +434,28 @@ $(document).ready(() => {
     //
 
     $(document).on('click', "button[name='guide']", function () {
-        
-        if($(this).hasClass('btn-danger')){
+
+        if ($(this).hasClass('btn-danger')) {
             $('#guide_info').visibilityToggle();
             $(this).removeClass('btn-danger');
             $(this).addClass('btn-success');
-        }
-        else{
+        } else {
             $('#guide_info').visible();
             $(this).removeClass('btn-success');
             $(this).addClass('btn-danger');
             $("button[name='guide']").not(this).removeClass('btn-danger');
             $("button[name='guide']").not(this).addClass('btn-success');
         }
-      
+
         map.removeObjects(map.getObjects());
         if (ui.getBubbles().length > 0) {
             ui.getBubbles().forEach(element => {
                 ui.removeBubble(element);
             });
         }
-        var string = $(this).attr('id').split('');
-
+        var string = $(this).attr('id').split('_');
+        console.log(string)
         getDriverById(string[0], string[1]);
-        
+
     })
 })

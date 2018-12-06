@@ -26,9 +26,11 @@ exports.updateRequest = (request) =>{
 }
 
 exports.updateStateRequest = (request)=>{
-    var sql = `update request set requestState = ${request.state} where idRequest ${request.idRequest}`
+    var sql = `update request set requestState = ${request.state} where idRequest = ${request.idRequest};`;
+    return db.update(sql);
 };
 
 exports.updateRequestDriver = (request)=>{
-    var sql = `update request set idDriver = ${request.idDriver} where idRequest ${request.idRequest}`
+    var sql = `update request set idDriver = ${request.idDriver} where idRequest = ${request.idRequest};`;
+    return db.update(sql);
 };
