@@ -34,3 +34,8 @@ exports.updateRequestDriver = (request)=>{
     var sql = `update request set idDriver = ${request.idDriver} where idRequest = ${request.idRequest};`;
     return db.update(sql);
 };
+
+exports.updateCountSearch = id =>{
+    var sql = `update request set countSearch = countSearch + 1 where idRequest = ${id};`
+    return db.update(sql);
+}

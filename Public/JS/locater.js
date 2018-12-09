@@ -124,7 +124,7 @@ $(document).ready(() => {
                 idRequest
             };
             datasave = JSON.stringify(datasave);
-            console.log(datasave);
+            
             $.ajax({
                 url: '/admin/located',
                 beforeSend: function (request) {
@@ -136,6 +136,7 @@ $(document).ready(() => {
                 contentType: 'application/json',
                 timeout: 10000
             })
+            $('#mapAndAccept').invisible();
         }
     });
 

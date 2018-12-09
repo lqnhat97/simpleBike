@@ -68,7 +68,7 @@ $(document).ready(function () {
       beforeSend: function (request) {
         request.setRequestHeader("x-access-token", token);
       },
-      data:fdata ,
+      data: fdata,
       type: 'POST',
       dataType: 'json',
       timeout: 1000
@@ -87,47 +87,35 @@ $(document).ready(function () {
   var requestLocation;
   var idRequest;
   socket.on("request-driver", (data) => {
-    console.log(data);
-    data.id.forEach(element => {
-      if (element == (localStorage.getItem("idDriver") - 1)) {
-        if (driverState == 1) {
-          driverState = 0;
-          changeDriverStatus(driverState);
-          $("#status").bootstrapToggle('off');
-          $("#myModal").modal({
-            backdrop: 'static',
-            keyboard: false
-          });
-          $("#cus_name").html(data.data.clientName);
-          $("#cus_address").html(data.data.clientAddress);
-          $("#cus_tel").html(data.data.clientPhone);
-          $("#cus_note").html(data.data.clientNote);
-          requestLocation = {
-            lat: data.data.startX,
-            lng: data.data.startY
-          };
-
-          idRequest = data.data.idRequest;
-        }
+    if (data.id != -1) {
+      var idList = data.id;
+      var isDriver = idList.indexOf(localStorage.getItem("idDriver") - 1);
+      if (isDriver !== -1) {
+        driverState = 0;
+        changeDriverStatus(driverState);
+        $("#status").bootstrapToggle('off');
+        $("#myModal").modal({
+          backdrop: 'static',
+          keyboard: false
+        });
+        $("#cus_name").html(data.data.clientName);
+        $("#cus_address").html(data.data.clientAddress);
+        $("#cus_tel").html(data.data.clientPhone);
+        $("#cus_note").html(data.data.clientNote);
+        requestLocation = {
+          lat: data.data.startX,
+          lng: data.data.startY
+        };
+        idRequest = data.data.idRequest;
       }
-    })
+    }
   })
 
   $("#accept").click(function () {
     driverState = 0;
     changeDriverStatus(driverState);
-    $("#status").bootstrapToggle('off');
-    //Socket something back
-    routing({
-      lat: curr.coords.latitude,
-      lng: curr.coords.longitude
-    }, requestLocation);
     $('#myModal').modal('hide');
-    $('#ready').hide();
-    changeRequestStatus(idRequest, 2);
-    console.log(idRequest);
     changeRequestDriver(idRequest);
-    $('#moving').fadeIn("slow");
     socket.emit("send-request")
   })
 
@@ -145,6 +133,9 @@ $(document).ready(function () {
     $("#start").show();
     changeRequestStatus(idRequest, 4);
     map.removeObjects(map.getObjects());
+    
+    ui.removeBubble(ui.getBubbles()[0]);
+    ui.removeBubble(ui.getBubbles()[0]);
     getLocation();
   })
 
@@ -153,6 +144,7 @@ $(document).ready(function () {
       "idRequest": idRequest,
       "idDriver": idDriver
     });
+    var isSuccess = 0;
     $.ajax({
       contentType: 'application/json',
       url: '/admin/updateRequestDriver',
@@ -162,7 +154,23 @@ $(document).ready(function () {
       data: fdata,
       type: 'POST',
       dataType: 'json',
-      timeout: 1000
+      timeout: 1000,
+    }).done((data) => {
+      
+      if (data.code == 200) {
+        changeRequestStatus(idRequest, 2);
+        isSuccess = 1;
+        routing({
+          lat: curr.coords.latitude,
+          lng: curr.coords.longitude
+        }, requestLocation);
+        $('#ready').hide();
+        $("#status").bootstrapToggle('off');
+        $('#moving').fadeIn("slow");
+      } else {
+        alert("Yêu cầu đã có người nhận rồi !!")
+        $("#status").bootstrapToggle('on');
+      }
     })
   }
 
