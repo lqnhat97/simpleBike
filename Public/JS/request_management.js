@@ -223,35 +223,36 @@ $(document).ready(() => {
             dataType: 'json',
             timeout: 10000
         }).done(function (data) {
-            var state;
+            var state_str;
             $("#user_info").html("");
+        
             data.forEach(element => {
                 var guideHTML = "*";
                 switch (element.requestState) {
                     case 0:
-                        state = "Not Locate";
+                    state_str = "Not Locate";
                         break;
                     case 1:
-                        state = "Located";
+                    state_str = "Located";
                         break;
                     case 2:
                         var combine = "" + element.idRequest + "_" + element.idDriver;
 
                         assignedRequest.push(element);
-                        state = "Assigned";
+                        state_str = "Assigned";
                         guideHTML = "<button type='button' class='btn btn-success' id = '" + combine + "' name='guide' >Guide</button>"
 
                         var destination = element.clientAddress;
                         geo(destination);
                         break;
                     case 3:
-                        state = "Moving";
+                    state_str = "Moving";
                         break;
                     case 4:
-                        state = "Finish";
+                    state_str = "Finish";
                         break;
                     case 5:
-                        state = "No bike";
+                    state_str = "No bike";
                         break;
                 }
                 $('#user_info').html($('#user_info').html() +
@@ -260,7 +261,7 @@ $(document).ready(() => {
                     "<td class='col15per'>" + element.clientName + "</td>" +
                     "<td class='col15per'>" + element.clientPhone + "</td>" +
                     "<td class='col20per'>" + element.clientAddress + "</td>" +
-                    "<td class='col10per'>" + state + "</td>" +
+                    "<td class='col10per'>" + state_str + "</td>" +
                     "<td class='col15per'>" + element.requestTime + "</td>" +
                     "<td class='col10per'>" + guideHTML + "  </td>" +
                     "</tr>");
@@ -270,7 +271,7 @@ $(document).ready(() => {
     getAll();
 
     socket.on("get-request", () => {
-        if (state == -1) {
+        if (state.type == -1) {
             setTimeout(getAll, 1000);
         } else {
             getRequestByState(state.type,state.name);

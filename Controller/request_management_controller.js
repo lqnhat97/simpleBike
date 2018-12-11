@@ -195,7 +195,8 @@ function sendRequestToDriver(id) {
             });
         }
         if (data[0].countSearch == 3) {
-            requestRepos.updateStateRequest({state:5,idRequest:id.id})
+            requestRepos.updateStateRequest({state:5,idRequest:id.id});
+            global.io.sockets.emit("get-request");
             clearInterval(this)
         }
     }).catch(err => {
